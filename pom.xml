@@ -30,6 +30,8 @@
     </developers>
     <modules>
         <module>common</module>
+        <module>button</module>
+        <module>animation</module>
     </modules>
 
     <issueManagement>
