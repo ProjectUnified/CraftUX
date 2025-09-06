@@ -1,7 +1,7 @@
 package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.animation.Animation;
-import io.github.projectunified.craftux.common.item.ActionItem;
+import io.github.projectunified.craftux.common.ActionItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

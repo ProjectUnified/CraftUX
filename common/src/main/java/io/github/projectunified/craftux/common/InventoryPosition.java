@@ -1,4 +1,4 @@
-package io.github.projectunified.craftux.common.inventory;
+package io.github.projectunified.craftux.common;
 
 import java.util.Objects;
 

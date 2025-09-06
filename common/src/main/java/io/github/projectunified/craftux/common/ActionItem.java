@@ -1,6 +1,6 @@
-package io.github.projectunified.craftux.common.item;
+package io.github.projectunified.craftux.common;
 
-import io.github.projectunified.craftux.common.event.ViewerEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
@@ -11,7 +11,43 @@ import java.util.function.Consumer;
  */
 public final class ActionItem {
     private @Nullable Object item;
-    private @Nullable Consumer<ViewerEvent> action;
+    private @Nullable Consumer<Object> action;
+
+    /**
+     * Create an empty {@link ActionItem}
+     */
+    public ActionItem() {
+        // EMPTY
+    }
+
+    /**
+     * Create a copy of {@link ActionItem}
+     *
+     * @param actionItem       the action item to copy
+     * @param applyOnlyNonnull if true, only non-null fields will be copied
+     */
+    public ActionItem(@NotNull ActionItem actionItem, boolean applyOnlyNonnull) {
+        if (applyOnlyNonnull) {
+            if (actionItem.item != null) {
+                this.item = actionItem.item;
+            }
+            if (actionItem.action != null) {
+                this.action = actionItem.action;
+            }
+        } else {
+            this.item = actionItem.item;
+            this.action = actionItem.action;
+        }
+    }
+
+    /**
+     * Create a copy of {@link ActionItem}
+     *
+     * @param actionItem the action item to copy
+     */
+    public ActionItem(@NotNull ActionItem actionItem) {
+        this(actionItem, false);
+    }
 
     /**
      * Get the item
@@ -49,7 +85,7 @@ public final class ActionItem {
      *
      * @return the action
      */
-    public @Nullable Consumer<ViewerEvent> getAction() {
+    public @Nullable Consumer<Object> getAction() {
         return action;
     }
 
@@ -59,7 +95,7 @@ public final class ActionItem {
      * @param action the action
      * @return this object
      */
-    public ActionItem setAction(@Nullable Consumer<ViewerEvent> action) {
+    public ActionItem setAction(@Nullable Consumer<Object> action) {
         this.action = action;
         return this;
     }
@@ -70,8 +106,8 @@ public final class ActionItem {
      * @param operator the operator with the event and the old action
      * @return this object
      */
-    public ActionItem extendAction(BiConsumer<ViewerEvent, Consumer<ViewerEvent>> operator) {
-        Consumer<ViewerEvent> oldAction = this.action != null ? this.action : event -> {
+    public ActionItem extendAction(BiConsumer<Object, Consumer<Object>> operator) {
+        Consumer<Object> oldAction = this.action != null ? this.action : event -> {
         };
         this.action = event -> operator.accept(event, oldAction);
         return this;
@@ -85,7 +121,7 @@ public final class ActionItem {
      * @param <E>        the event type
      * @return this object
      */
-    public <E extends ViewerEvent> ActionItem setAction(Class<E> eventClass, Consumer<E> action) {
+    public <E> ActionItem setAction(Class<E> eventClass, Consumer<E> action) {
         return extendAction((event, oldAction) -> {
             if (eventClass.isInstance(event)) {
                 action.accept(eventClass.cast(event));
@@ -103,7 +139,7 @@ public final class ActionItem {
      * @param <E>        the event type
      * @return this object
      */
-    public <E extends ViewerEvent> ActionItem extendAction(Class<E> eventClass, BiConsumer<E, Consumer<ViewerEvent>> operator) {
+    public <E> ActionItem extendAction(Class<E> eventClass, BiConsumer<E, Consumer<Object>> operator) {
         return extendAction((event, oldAction) -> {
             if (eventClass.isInstance(event)) {
                 operator.accept(eventClass.cast(event), oldAction);
@@ -118,25 +154,9 @@ public final class ActionItem {
      *
      * @param event the event
      */
-    public void callAction(ViewerEvent event) {
+    public void callAction(Object event) {
         if (action != null) {
             action.accept(event);
         }
-    }
-
-    /**
-     * Apply the action item
-     *
-     * @param actionItem the action item
-     * @return this object
-     */
-    public ActionItem apply(ActionItem actionItem) {
-        if (actionItem.item != null) {
-            this.item = actionItem.item;
-        }
-        if (actionItem.action != null) {
-            this.action = actionItem.action;
-        }
-        return this;
     }
 }

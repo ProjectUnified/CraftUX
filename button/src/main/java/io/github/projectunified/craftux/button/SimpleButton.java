@@ -1,7 +1,6 @@
 package io.github.projectunified.craftux.button;
 
-import io.github.projectunified.craftux.common.event.ClickEvent;
-import io.github.projectunified.craftux.common.item.ActionItem;
+import io.github.projectunified.craftux.common.ActionItem;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +13,7 @@ import java.util.function.Function;
  */
 public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem> {
     private final Function<UUID, Object> itemFunction;
-    private final Consumer<ClickEvent> consumer;
+    private final Consumer<Object> consumer;
 
     /**
      * Create a new simple button
@@ -22,7 +21,7 @@ public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem
      * @param itemFunction the item function
      * @param consumer     the consumer
      */
-    public SimpleButton(@NotNull Function<@NotNull UUID, @Nullable Object> itemFunction, @NotNull Consumer<@NotNull ClickEvent> consumer) {
+    public SimpleButton(@NotNull Function<@NotNull UUID, @Nullable Object> itemFunction, @NotNull Consumer<@NotNull Object> consumer) {
         this.itemFunction = itemFunction;
         this.consumer = consumer;
     }
@@ -33,7 +32,7 @@ public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem
      * @param item     the item
      * @param consumer the consumer
      */
-    public SimpleButton(@Nullable Object item, @NotNull Consumer<@NotNull ClickEvent> consumer) {
+    public SimpleButton(@Nullable Object item, @NotNull Consumer<@NotNull Object> consumer) {
         this(uuid -> item, consumer);
     }
 
@@ -42,7 +41,7 @@ public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem
      *
      * @param consumer the consumer
      */
-    public SimpleButton(@NotNull Consumer<@NotNull ClickEvent> consumer) {
+    public SimpleButton(@NotNull Consumer<@NotNull Object> consumer) {
         this((Object) null, consumer);
     }
 
@@ -69,10 +68,6 @@ public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem
     public @NotNull ActionItem apply(@NotNull UUID uuid) {
         return new ActionItem()
                 .setItem(itemFunction.apply(uuid))
-                .setAction(event -> {
-                    if (event instanceof ClickEvent) {
-                        consumer.accept((ClickEvent) event);
-                    }
-                });
+                .setAction(consumer);
     }
 }
