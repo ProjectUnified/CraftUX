@@ -29,12 +29,7 @@ public final class ActionItem {
      */
     public ActionItem(@NotNull ActionItem actionItem, boolean applyOnlyNonnull) {
         if (applyOnlyNonnull) {
-            if (actionItem.item != null) {
-                this.item = actionItem.item;
-            }
-            if (actionItem.action != null) {
-                this.action = actionItem.action;
-            }
+            apply(actionItem);
         } else {
             this.item = actionItem.item;
             this.action = actionItem.action;
@@ -169,6 +164,20 @@ public final class ActionItem {
     public void callAction(Object event) {
         if (action != null) {
             action.accept(event);
+        }
+    }
+
+    /**
+     * Apply non-null fields from another {@link ActionItem}
+     *
+     * @param actionItem the action item to copy
+     */
+    public void apply(@NotNull ActionItem actionItem) {
+        if (actionItem.item != null) {
+            this.item = actionItem.item;
+        }
+        if (actionItem.action != null) {
+            this.action = actionItem.action;
         }
     }
 }

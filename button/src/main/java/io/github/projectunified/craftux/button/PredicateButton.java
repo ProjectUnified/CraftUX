@@ -1,7 +1,7 @@
 package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.common.ActionItem;
-import io.github.projectunified.craftux.common.GUIElement;
+import io.github.projectunified.craftux.common.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ import java.util.function.Predicate;
 /**
  * The button with predicates
  */
-public class PredicateButton implements GUIElement, Function<@NotNull UUID, @Nullable ActionItem> {
+public class PredicateButton implements Element, Function<@NotNull UUID, @Nullable ActionItem> {
     private Function<@NotNull UUID, @Nullable ActionItem> button = context -> null;
     private Function<@NotNull UUID, @Nullable ActionItem> fallbackButton = context -> null;
     private @Nullable Predicate<UUID> viewPredicate = null;
@@ -126,7 +126,7 @@ public class PredicateButton implements GUIElement, Function<@NotNull UUID, @Nul
             return copy;
         }
 
-        return new ActionItem(actionItem).extendAction((event, action) -> {
+        return copy.extendAction((event, action) -> {
             if (actionPredicate.test(event)) {
                 action.accept(event);
             }
@@ -135,13 +135,13 @@ public class PredicateButton implements GUIElement, Function<@NotNull UUID, @Nul
 
     @Override
     public void init() {
-        GUIElement.handleIfElement(button, GUIElement::init);
-        GUIElement.handleIfElement(fallbackButton, GUIElement::init);
+        Element.handleIfElement(button, Element::init);
+        Element.handleIfElement(fallbackButton, Element::init);
     }
 
     @Override
     public void stop() {
-        GUIElement.handleIfElement(button, GUIElement::stop);
-        GUIElement.handleIfElement(fallbackButton, GUIElement::stop);
+        Element.handleIfElement(button, Element::stop);
+        Element.handleIfElement(fallbackButton, Element::stop);
     }
 }

@@ -1,7 +1,7 @@
 package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.common.ActionItem;
-import io.github.projectunified.craftux.common.GUIElement;
+import io.github.projectunified.craftux.common.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,7 @@ import java.util.function.Function;
 /**
  * A base button that handles multiple child buttons
  */
-public abstract class MultiButton implements GUIElement, Function<@NotNull UUID, @Nullable ActionItem> {
+public abstract class MultiButton implements Element, Function<@NotNull UUID, @Nullable ActionItem> {
     protected final List<Function<@NotNull UUID, @Nullable ActionItem>> buttons = new ArrayList<>();
 
     /**
@@ -57,11 +57,11 @@ public abstract class MultiButton implements GUIElement, Function<@NotNull UUID,
         if (requireChildButtons() && this.buttons.isEmpty()) {
             throw new IllegalArgumentException("There is no child button for this button");
         }
-        GUIElement.handleIfElement(this.buttons, GUIElement::init);
+        Element.handleIfElement(this.buttons, Element::init);
     }
 
     @Override
     public void stop() {
-        GUIElement.handleIfElement(this.buttons, GUIElement::stop);
+        Element.handleIfElement(this.buttons, Element::stop);
     }
 }

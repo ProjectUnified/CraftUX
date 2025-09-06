@@ -6,26 +6,26 @@ import java.util.function.Consumer;
 /**
  * An element of the GUI
  */
-public interface GUIElement {
+public interface Element {
     /**
-     * Handle the object if it is an instance of {@link GUIElement}
+     * Handle the object if it is an instance of {@link Element}
      *
      * @param o               the object
      * @param elementConsumer the consumer
      */
-    static void handleIfElement(Object o, Consumer<GUIElement> elementConsumer) {
-        if (o instanceof GUIElement) {
-            elementConsumer.accept((GUIElement) o);
+    static void handleIfElement(Object o, Consumer<Element> elementConsumer) {
+        if (o instanceof Element) {
+            elementConsumer.accept((Element) o);
         }
     }
 
     /**
-     * Loop through the collection and handle the element if it is an instance of {@link GUIElement}
+     * Loop through the collection and handle the element if it is an instance of {@link Element}
      *
      * @param collection      the collection
      * @param elementConsumer the consumer
      */
-    static <T> void handleIfElement(Collection<T> collection, Consumer<GUIElement> elementConsumer) {
+    static <T> void handleIfElement(Collection<T> collection, Consumer<Element> elementConsumer) {
         collection.forEach(o -> handleIfElement(o, elementConsumer));
     }
 

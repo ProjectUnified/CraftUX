@@ -3,9 +3,9 @@ package io.github.projectunified.craftux.common;
 import java.util.Objects;
 
 /**
- * The position of the inventory
+ * The position
  */
-public class InventoryPosition {
+public class Position {
     private final int x;
     private final int y;
 
@@ -15,7 +15,7 @@ public class InventoryPosition {
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    private InventoryPosition(int x, int y) {
+    private Position(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -26,8 +26,8 @@ public class InventoryPosition {
      * @param x the x coordinate
      * @param y the y coordinate
      */
-    public static InventoryPosition of(int x, int y) {
-        return new InventoryPosition(x, y);
+    public static Position of(int x, int y) {
+        return new Position(x, y);
     }
 
     /**
@@ -39,8 +39,8 @@ public class InventoryPosition {
      * @param y2 the y of the second position
      * @return the max position
      */
-    public static InventoryPosition maxPosition(int x1, int y1, int x2, int y2) {
-        return InventoryPosition.of(Math.max(x1, x2), Math.max(y1, y2));
+    public static Position maxPosition(int x1, int y1, int x2, int y2) {
+        return Position.of(Math.max(x1, x2), Math.max(y1, y2));
     }
 
     /**
@@ -50,7 +50,7 @@ public class InventoryPosition {
      * @param position2 the second position
      * @return the max position
      */
-    public static InventoryPosition maxPosition(InventoryPosition position1, InventoryPosition position2) {
+    public static Position maxPosition(Position position1, Position position2) {
         return maxPosition(position1.getX(), position1.getY(), position2.getX(), position2.getY());
     }
 
@@ -63,8 +63,8 @@ public class InventoryPosition {
      * @param y2 the y of the second position
      * @return the min position
      */
-    public static InventoryPosition minPosition(int x1, int y1, int x2, int y2) {
-        return InventoryPosition.of(Math.min(x1, x2), Math.min(y1, y2));
+    public static Position minPosition(int x1, int y1, int x2, int y2) {
+        return Position.of(Math.min(x1, x2), Math.min(y1, y2));
     }
 
     /**
@@ -74,7 +74,7 @@ public class InventoryPosition {
      * @param position2 the second position
      * @return the min position
      */
-    public static InventoryPosition minPosition(InventoryPosition position1, InventoryPosition position2) {
+    public static Position minPosition(Position position1, Position position2) {
         return minPosition(position1.getX(), position1.getY(), position2.getX(), position2.getY());
     }
 
@@ -100,7 +100,7 @@ public class InventoryPosition {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        InventoryPosition that = (InventoryPosition) o;
+        Position that = (Position) o;
         return x == that.x && y == that.y;
     }
 
