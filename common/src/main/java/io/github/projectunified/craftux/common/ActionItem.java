@@ -5,6 +5,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.UnaryOperator;
 
 /**
  * The action item
@@ -66,6 +67,17 @@ public final class ActionItem {
      */
     public ActionItem setItem(@Nullable Object item) {
         this.item = item;
+        return this;
+    }
+
+    /**
+     * Expand the item
+     *
+     * @param operator the operator to expand the item
+     * @return this object
+     */
+    public ActionItem expandItem(UnaryOperator<Object> operator) {
+        this.item = operator.apply(this.item);
         return this;
     }
 
