@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.BiPredicate;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -66,6 +67,35 @@ public class PredicateButton implements Element, Function<@NotNull UUID, @Nullab
         this.actionPredicate = event -> {
             if (eventClass.isInstance(event) && !actionPredicate.test(eventClass.cast(event))) {
                 return false;
+            }
+            return oldActionPredicate == null || oldActionPredicate.test(event);
+        };
+    }
+
+    /**
+     * Expand the action predicate
+     *
+     * @param actionPredicate the action predicate
+     */
+    public void expandActionPredicate(@NotNull BiPredicate<@NotNull Object, @Nullable Predicate<Object>> actionPredicate) {
+        Predicate<Object> oldActionPredicate = this.actionPredicate;
+        this.actionPredicate = event -> actionPredicate.test(event, oldActionPredicate);
+    }
+
+    /**
+     * Expand the action predicate for a specific event class
+     *
+     * @param eventClass      the event class
+     * @param actionPredicate the action predicate
+     * @param <E>             the event type
+     */
+    public <E> void expandActionPredicate(@NotNull Class<E> eventClass, @NotNull BiPredicate<@NotNull E, @Nullable Predicate<Object>> actionPredicate) {
+        Predicate<Object> oldActionPredicate = this.actionPredicate;
+        this.actionPredicate = event -> {
+            if (eventClass.isInstance(event)) {
+                if (!actionPredicate.test(eventClass.cast(event), oldActionPredicate)) {
+                    return false;
+                }
             }
             return oldActionPredicate == null || oldActionPredicate.test(event);
         };
