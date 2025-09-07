@@ -1,4 +1,4 @@
-package io.github.projectunified.craftux.mask;
+package io.github.projectunified.craftux.simple;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A simple button map
+ * A simple button mask
  */
 public class SimpleButtonMask implements Element, Function<@NotNull UUID, @NotNull Map<Position, Consumer<ActionItem>>> {
     private final Map<BiPredicate<@NotNull UUID, @NotNull ActionItem>, Collection<Position>> buttonSlotMap = new LinkedHashMap<>();

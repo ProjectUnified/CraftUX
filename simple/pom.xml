@@ -9,7 +9,7 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>craftux-mask-simple</artifactId>
+    <artifactId>craftux-simple</artifactId>
 
     <dependencies>
         <dependency>

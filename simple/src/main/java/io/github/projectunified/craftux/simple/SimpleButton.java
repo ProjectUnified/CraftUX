@@ -1,4 +1,4 @@
-package io.github.projectunified.craftux.button;
+package io.github.projectunified.craftux.simple;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import org.jetbrains.annotations.NotNull;
