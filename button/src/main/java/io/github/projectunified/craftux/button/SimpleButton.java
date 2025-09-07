@@ -67,7 +67,8 @@ public class SimpleButton implements BiPredicate<@NotNull UUID, @NotNull ActionI
 
     @Override
     public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
-        actionItem.setItem(itemFunction.apply(uuid)).setAction(consumer);
+        actionItem.setItem(itemFunction.apply(uuid));
+        actionItem.setAction(consumer);
         return true;
     }
 }

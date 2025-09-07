@@ -58,22 +58,18 @@ public final class ActionItem {
      * Set the item
      *
      * @param item the item
-     * @return this object
      */
-    public ActionItem setItem(@Nullable Object item) {
+    public void setItem(@Nullable Object item) {
         this.item = item;
-        return this;
     }
 
     /**
      * Expand the item
      *
      * @param operator the operator to expand the item
-     * @return this object
      */
-    public ActionItem expandItem(UnaryOperator<Object> operator) {
+    public void expandItem(UnaryOperator<Object> operator) {
         this.item = operator.apply(this.item);
-        return this;
     }
 
     /**
@@ -100,24 +96,20 @@ public final class ActionItem {
      * Set the action
      *
      * @param action the action
-     * @return this object
      */
-    public ActionItem setAction(@Nullable Consumer<Object> action) {
+    public void setAction(@Nullable Consumer<Object> action) {
         this.action = action;
-        return this;
     }
 
     /**
      * Extend the action
      *
      * @param operator the operator with the event and the old action
-     * @return this object
      */
-    public ActionItem extendAction(BiConsumer<Object, Consumer<Object>> operator) {
+    public void extendAction(BiConsumer<Object, Consumer<Object>> operator) {
         Consumer<Object> oldAction = this.action != null ? this.action : event -> {
         };
         this.action = event -> operator.accept(event, oldAction);
-        return this;
     }
 
     /**
@@ -126,10 +118,9 @@ public final class ActionItem {
      * @param eventClass the event class
      * @param action     the action
      * @param <E>        the event type
-     * @return this object
      */
-    public <E> ActionItem setAction(Class<E> eventClass, Consumer<E> action) {
-        return extendAction((event, oldAction) -> {
+    public <E> void setAction(Class<E> eventClass, Consumer<E> action) {
+        extendAction((event, oldAction) -> {
             if (eventClass.isInstance(event)) {
                 action.accept(eventClass.cast(event));
             } else {
@@ -144,10 +135,9 @@ public final class ActionItem {
      * @param eventClass the event class
      * @param operator   the operator with the event and the old action
      * @param <E>        the event type
-     * @return this object
      */
-    public <E> ActionItem extendAction(Class<E> eventClass, BiConsumer<E, Consumer<Object>> operator) {
-        return extendAction((event, oldAction) -> {
+    public <E> void extendAction(Class<E> eventClass, BiConsumer<E, Consumer<Object>> operator) {
+        extendAction((event, oldAction) -> {
             if (eventClass.isInstance(event)) {
                 operator.accept(eventClass.cast(event), oldAction);
             } else {
