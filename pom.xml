@@ -33,6 +33,7 @@
         <module>button</module>
         <module>animation</module>
         <module>mask</module>
+        <module>mask-simple</module>
     </modules>
 
     <issueManagement>
