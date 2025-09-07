@@ -64,12 +64,39 @@ public final class ActionItem {
     }
 
     /**
-     * Expand the item
+     * Extend the item
      *
-     * @param operator the operator to expand the item
+     * @param operator the operator to extend the item
      */
-    public void expandItem(UnaryOperator<Object> operator) {
+    public void extendItem(UnaryOperator<Object> operator) {
         this.item = operator.apply(this.item);
+    }
+
+    /**
+     * Extend the item if it is of the given class
+     *
+     * @param itemClass the class to check
+     * @param operator  the operator to extend the item
+     * @param <T>       the item type
+     */
+    public <T> void extendItem(Class<T> itemClass, UnaryOperator<T> operator) {
+        if (itemClass.isInstance(this.item)) {
+            this.item = operator.apply(itemClass.cast(this.item));
+        }
+    }
+
+    /**
+     * Get the item as the given class, or null if it is not of that class
+     *
+     * @param itemClass the class to check
+     * @param <T>       the item type
+     * @return the item or null
+     */
+    public <T> @Nullable T getItem(Class<T> itemClass) {
+        if (itemClass.isInstance(this.item)) {
+            return itemClass.cast(this.item);
+        }
+        return null;
     }
 
     /**
