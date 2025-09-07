@@ -2,21 +2,23 @@ package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
+import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
  * The mask with predicate
  */
-public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> {
+public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
     private Predicate<UUID> viewPredicate = uuid -> true;
-    private Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> mask = context -> null;
-    private Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> fallbackMask = context -> null;
+    private Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> mask = uuid -> null;
+    private Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> fallbackMask = uuid -> null;
 
     /**
      * Set the view predicate
@@ -33,7 +35,7 @@ public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable
      * @return the mask
      */
     @NotNull
-    public Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> getMask() {
+    public Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> getMask() {
         return mask;
     }
 
@@ -42,7 +44,7 @@ public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable
      *
      * @param mask the mask
      */
-    public void setMask(@NotNull Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> mask) {
+    public void setMask(@NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> mask) {
         this.mask = mask;
     }
 
@@ -52,7 +54,7 @@ public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable
      * @return the fallback mask
      */
     @NotNull
-    public Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> getFallbackMask() {
+    public Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> getFallbackMask() {
         return fallbackMask;
     }
 
@@ -61,7 +63,7 @@ public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable
      *
      * @param fallbackMask the fallback mask
      */
-    public void setFallbackMask(@NotNull Function<@NotNull UUID, @Nullable Map<Integer, ActionItem>> fallbackMask) {
+    public void setFallbackMask(@NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> fallbackMask) {
         this.fallbackMask = fallbackMask;
     }
 
@@ -78,7 +80,7 @@ public class PredicateMask implements Element, Function<@NotNull UUID, @Nullable
     }
 
     @Override
-    public @Nullable Map<Integer, ActionItem> apply(@NotNull UUID uuid) {
+    public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         if (viewPredicate.test(uuid)) {
             return mask.apply(uuid);
         } else {

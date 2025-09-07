@@ -8,12 +8,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * The masks with multiple positions
  */
-public class MultiPositionMask extends MultiMask<ActionItem> {
+public class MultiPositionMask extends MultiMask<Consumer<ActionItem>> {
     protected final Function<UUID, List<Position>> maskPositionFunction;
 
     /**
@@ -36,17 +37,15 @@ public class MultiPositionMask extends MultiMask<ActionItem> {
     }
 
     @Override
-    public @NotNull Map<Position, ActionItem> apply(@NotNull UUID uuid) {
-        Map<Position, ActionItem> map = new HashMap<>();
+    public @NotNull Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        Map<Position, Consumer<ActionItem>> map = new HashMap<>();
         List<Position> positions = this.maskPositionFunction.apply(uuid);
         if (!this.elements.isEmpty() && !positions.isEmpty()) {
             int positionSize = positions.size();
             int buttonsSize = this.elements.size();
             for (int i = 0; i < positionSize; i++) {
-                ActionItem item = this.elements.get(i % buttonsSize).apply(uuid);
-                if (item != null) {
-                    map.put(positions.get(i), item);
-                }
+                Consumer<ActionItem> item = this.elements.get(i % buttonsSize).apply(uuid);
+                map.put(positions.get(i), item);
             }
         }
         return map;

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -21,11 +22,11 @@ public abstract class MaskPaginatedMask extends PaginatedMask {
      * @return the masks
      */
     @NotNull
-    public abstract List<@NotNull Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>> getMasks(@NotNull UUID uuid);
+    public abstract List<@NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getMasks(@NotNull UUID uuid);
 
     @Override
-    protected @Nullable Map<@NotNull Position, @NotNull ActionItem> getItemMap(@NotNull UUID uuid, int pageNumber) {
-        List<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>> masks = getMasks(uuid);
+    protected @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber) {
+        List<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> masks = getMasks(uuid);
         if (masks.isEmpty()) {
             return null;
         }

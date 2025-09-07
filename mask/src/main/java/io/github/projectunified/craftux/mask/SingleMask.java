@@ -9,14 +9,16 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * The simple mask with a single button
  */
-public class SingleMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, ActionItem>> {
+public class SingleMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
     protected final Position position;
-    protected final Function<@NotNull UUID, @Nullable ActionItem> button;
+    protected final BiPredicate<@NotNull UUID, @NotNull ActionItem> button;
 
     /**
      * Create a new mask
@@ -24,7 +26,7 @@ public class SingleMask implements Element, Function<@NotNull UUID, @Nullable Ma
      * @param position the position
      * @param button   the button
      */
-    public SingleMask(Position position, @NotNull Function<@NotNull UUID, @Nullable ActionItem> button) {
+    public SingleMask(Position position, @NotNull BiPredicate<@NotNull UUID, @NotNull ActionItem> button) {
         this.position = position;
         this.button = button;
     }
@@ -40,8 +42,7 @@ public class SingleMask implements Element, Function<@NotNull UUID, @Nullable Ma
     }
 
     @Override
-    public @Nullable Map<Position, ActionItem> apply(@NotNull UUID uuid) {
-        ActionItem actionItem = this.button.apply(uuid);
-        return actionItem == null ? null : Collections.singletonMap(this.position, actionItem);
+    public @NotNull Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        return Collections.singletonMap(position, actionItem -> button.test(uuid, actionItem));
     }
 }

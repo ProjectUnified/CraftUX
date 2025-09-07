@@ -9,13 +9,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * The animated mask with child masks as frames
  */
-public class AnimatedMask extends MultiMask<Map<Position, ActionItem>> {
-    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>>> animationMap = new ConcurrentHashMap<>();
+public class AnimatedMask extends MultiMask<Map<Position, Consumer<ActionItem>>> {
+    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50;
 
     @Override
@@ -35,7 +36,7 @@ public class AnimatedMask extends MultiMask<Map<Position, ActionItem>> {
         this.periodMillis = periodMillis;
     }
 
-    private Animation<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>> getAnimation(@NotNull UUID uuid) {
+    private Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getAnimation(@NotNull UUID uuid) {
         return animationMap.computeIfAbsent(uuid, k -> new Animation<>(elements, periodMillis));
     }
 
@@ -46,7 +47,7 @@ public class AnimatedMask extends MultiMask<Map<Position, ActionItem>> {
     }
 
     @Override
-    public @Nullable Map<Position, ActionItem> apply(@NotNull UUID uuid) {
+    public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         return getAnimation(uuid).getCurrentFrame().apply(uuid);
     }
 }

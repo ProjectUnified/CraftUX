@@ -5,13 +5,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
+import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * A simple button
  */
-public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem> {
+public class SimpleButton implements BiPredicate<@NotNull UUID, @NotNull ActionItem> {
     private final Function<UUID, Object> itemFunction;
     private final Consumer<Object> consumer;
 
@@ -65,9 +66,8 @@ public class SimpleButton implements Function<@NotNull UUID, @NotNull ActionItem
     }
 
     @Override
-    public @NotNull ActionItem apply(@NotNull UUID uuid) {
-        return new ActionItem()
-                .setItem(itemFunction.apply(uuid))
-                .setAction(consumer);
+    public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
+        actionItem.setItem(itemFunction.apply(uuid)).setAction(consumer);
+        return true;
     }
 }

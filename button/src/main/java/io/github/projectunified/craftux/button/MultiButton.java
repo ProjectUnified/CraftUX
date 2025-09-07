@@ -3,16 +3,15 @@ package io.github.projectunified.craftux.button;
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
 
 /**
  * A base button that handles multiple child buttons
  */
-public abstract class MultiButton implements Element, Function<@NotNull UUID, @Nullable ActionItem> {
-    protected final List<Function<@NotNull UUID, @Nullable ActionItem>> buttons = new ArrayList<>();
+public abstract class MultiButton implements Element, BiPredicate<@NotNull UUID, @NotNull ActionItem> {
+    protected final List<BiPredicate<@NotNull UUID, @NotNull ActionItem>> buttons = new ArrayList<>();
 
     /**
      * Whether to require child buttons
@@ -29,7 +28,7 @@ public abstract class MultiButton implements Element, Function<@NotNull UUID, @N
      * @param buttons the child buttons
      * @param <T>     the type of the button
      */
-    public final <T extends Function<@NotNull UUID, @Nullable ActionItem>> void addButton(@NotNull Collection<@NotNull T> buttons) {
+    public final <T extends BiPredicate<@NotNull UUID, @NotNull ActionItem>> void addButton(@NotNull Collection<@NotNull T> buttons) {
         this.buttons.addAll(buttons);
     }
 
@@ -39,7 +38,7 @@ public abstract class MultiButton implements Element, Function<@NotNull UUID, @N
      * @param button the button
      */
     @SafeVarargs
-    public final void addButton(@NotNull Function<@NotNull UUID, @Nullable ActionItem>... button) {
+    public final void addButton(@NotNull BiPredicate<@NotNull UUID, @NotNull ActionItem>... button) {
         addButton(Arrays.asList(button));
     }
 
@@ -48,7 +47,7 @@ public abstract class MultiButton implements Element, Function<@NotNull UUID, @N
      *
      * @return the list of child buttons
      */
-    public final List<Function<@NotNull UUID, @Nullable ActionItem>> getButtons() {
+    public final List<BiPredicate<@NotNull UUID, @NotNull ActionItem>> getButtons() {
         return Collections.unmodifiableList(this.buttons);
     }
 

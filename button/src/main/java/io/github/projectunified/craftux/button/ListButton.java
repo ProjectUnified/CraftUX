@@ -2,12 +2,11 @@ package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
+import java.util.function.BiPredicate;
 
 /**
  * The button that loops through the list of child buttons
@@ -44,20 +43,19 @@ public class ListButton extends MultiButton {
     }
 
     @Override
-    public @Nullable ActionItem apply(@NotNull UUID uuid) {
+    public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
         if (keepCurrentIndex && currentIndexMap.containsKey(uuid)) {
-            return buttons.get(currentIndexMap.get(uuid)).apply(uuid);
+            return buttons.get(currentIndexMap.get(uuid)).test(uuid, actionItem);
         }
 
         for (int i = 0; i < getButtons().size(); i++) {
-            Function<@NotNull UUID, @Nullable ActionItem> button = buttons.get(i);
-            ActionItem item = button.apply(uuid);
-            if (item != null) {
+            BiPredicate<@NotNull UUID, @NotNull ActionItem> button = buttons.get(i);
+            if (button.test(uuid, actionItem)) {
                 currentIndexMap.put(uuid, i);
-                return item;
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
 }

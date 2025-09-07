@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -14,7 +15,7 @@ import java.util.function.Function;
  *
  * @param <T> the type of the return value of the child element
  */
-public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @Nullable Map<Position, ActionItem>> {
+public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
     protected final List<Function<@NotNull UUID, @Nullable T>> elements = new ArrayList<>();
 
     /**

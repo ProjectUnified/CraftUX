@@ -7,15 +7,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
 import java.util.function.Predicate;
 
 /**
  * The button with predicates
  */
-public class PredicateButton implements Element, Function<@NotNull UUID, @Nullable ActionItem> {
-    private Function<@NotNull UUID, @Nullable ActionItem> button = context -> null;
-    private Function<@NotNull UUID, @Nullable ActionItem> fallbackButton = context -> null;
+public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nullable ActionItem> {
+    private @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> button = null;
+    private @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> fallbackButton = null;
     private @Nullable Predicate<UUID> viewPredicate = null;
     private @Nullable Predicate<Object> actionPredicate = null;
 
@@ -107,7 +106,7 @@ public class PredicateButton implements Element, Function<@NotNull UUID, @Nullab
      *
      * @return the button
      */
-    public Function<@NotNull UUID, @Nullable ActionItem> getButton() {
+    public @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> getButton() {
         return button;
     }
 
@@ -116,7 +115,7 @@ public class PredicateButton implements Element, Function<@NotNull UUID, @Nullab
      *
      * @param button the button
      */
-    public void setButton(@NotNull Function<@NotNull UUID, @Nullable ActionItem> button) {
+    public void setButton(@Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> button) {
         this.button = button;
     }
 
@@ -125,7 +124,7 @@ public class PredicateButton implements Element, Function<@NotNull UUID, @Nullab
      *
      * @return the fallback button
      */
-    public Function<@NotNull UUID, @Nullable ActionItem> getFallbackButton() {
+    public @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> getFallbackButton() {
         return fallbackButton;
     }
 
@@ -134,33 +133,27 @@ public class PredicateButton implements Element, Function<@NotNull UUID, @Nullab
      *
      * @param fallbackButton the fallback button
      */
-    public void setFallbackButton(@NotNull Function<@NotNull UUID, @Nullable ActionItem> fallbackButton) {
+    public void setFallbackButton(@Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> fallbackButton) {
         this.fallbackButton = fallbackButton;
     }
 
     @Override
-    public @Nullable ActionItem apply(@NotNull UUID uuid) {
-        ActionItem actionItem;
-        if (viewPredicate == null || viewPredicate.test(uuid)) {
-            actionItem = button.apply(uuid);
-        } else {
-            actionItem = fallbackButton.apply(uuid);
+    public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
+        BiPredicate<@NotNull UUID, @NotNull ActionItem> buttonToUse = viewPredicate == null || viewPredicate.test(uuid) ? button : fallbackButton;
+        if (buttonToUse == null) {
+            return false;
         }
 
-        if (actionItem == null) {
-            return null;
+        boolean result = buttonToUse.test(uuid, actionItem);
+        if (actionPredicate != null) {
+            actionItem.extendAction((event, action) -> {
+                if (actionPredicate.test(event)) {
+                    action.accept(event);
+                }
+            });
+            return true;
         }
-
-        ActionItem copy = new ActionItem(actionItem);
-        if (actionPredicate == null) {
-            return copy;
-        }
-
-        return copy.extendAction((event, action) -> {
-            if (actionPredicate.test(event)) {
-                action.accept(event);
-            }
-        });
+        return result;
     }
 
     @Override

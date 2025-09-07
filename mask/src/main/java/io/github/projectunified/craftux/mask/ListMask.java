@@ -7,16 +7,17 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * The mask with a list of child masks
  */
-public class ListMask extends MultiMask<Map<Position, ActionItem>> {
+public class ListMask extends MultiMask<Map<Position, Consumer<ActionItem>>> {
     @Override
-    public @Nullable Map<Position, ActionItem> apply(@NotNull UUID uuid) {
-        for (Function<@NotNull UUID, @Nullable Map<Position, ActionItem>> mask : elements) {
-            Map<Position, ActionItem> itemMap = mask.apply(uuid);
+    public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        for (Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> mask : elements) {
+            Map<Position, Consumer<ActionItem>> itemMap = mask.apply(uuid);
             if (itemMap != null) {
                 return itemMap;
             }

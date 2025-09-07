@@ -9,9 +9,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
-public abstract class PaginatedMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, ActionItem>> {
+public abstract class PaginatedMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
     protected final Map<UUID, Integer> pageNumberMap = new ConcurrentHashMap<>();
     protected boolean cycle = false;
 
@@ -22,7 +23,7 @@ public abstract class PaginatedMask implements Element, Function<@NotNull UUID, 
      * @param pageNumber the page number
      * @return the map contains the positions and the buttons
      */
-    protected abstract @Nullable Map<@NotNull Position, @NotNull ActionItem> getItemMap(@NotNull UUID uuid, int pageNumber);
+    protected abstract @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber);
 
     /**
      * Get the exact page from the input page
@@ -113,7 +114,7 @@ public abstract class PaginatedMask implements Element, Function<@NotNull UUID, 
     }
 
     @Override
-    public @Nullable Map<Position, ActionItem> apply(@NotNull UUID uuid) {
+    public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         return getItemMap(uuid, this.getPage(uuid));
     }
 }

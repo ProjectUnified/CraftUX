@@ -9,13 +9,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
  * The animated mask with child masks as frames, but only run once
  */
-public class OneTimeAnimatedMask extends MultiMask<Map<Position, ActionItem>> {
-    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>>> animationMap = new ConcurrentHashMap<>();
+public class OneTimeAnimatedMask extends MultiMask<Map<Position, Consumer<ActionItem>>> {
+    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>>> animationMap = new ConcurrentHashMap<>();
     private boolean viewLast = false;
     private long periodMillis = 50L;
 
@@ -54,7 +55,7 @@ public class OneTimeAnimatedMask extends MultiMask<Map<Position, ActionItem>> {
         getAnimation(uuid).reset();
     }
 
-    private Animation<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>> getAnimation(@NotNull UUID uuid) {
+    private Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getAnimation(@NotNull UUID uuid) {
         return animationMap.computeIfAbsent(uuid, key -> new Animation<>(elements, periodMillis));
     }
 
@@ -65,8 +66,8 @@ public class OneTimeAnimatedMask extends MultiMask<Map<Position, ActionItem>> {
     }
 
     @Override
-    public @Nullable Map<Position, ActionItem> apply(@NotNull UUID uuid) {
-        Animation<Function<@NotNull UUID, @Nullable Map<Position, ActionItem>>> animation = getAnimation(uuid);
+    public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> animation = getAnimation(uuid);
         long currentMillis = System.currentTimeMillis();
         if (animation.isFirstRun(currentMillis)) {
             return animation.getCurrentFrame(currentMillis).apply(uuid);

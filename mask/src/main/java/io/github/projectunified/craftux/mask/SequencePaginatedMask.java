@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -43,18 +45,18 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
      * @return the buttons
      */
     @NotNull
-    public abstract List<@NotNull Function<@NotNull UUID, @Nullable ActionItem>> getButtons(UUID uuid);
+    public abstract List<@NotNull BiPredicate<@NotNull UUID, @NotNull ActionItem>> getButtons(@NotNull UUID uuid);
 
     @Override
-    protected @Nullable Map<@NotNull Position, @NotNull ActionItem> getItemMap(@NotNull UUID uuid, int pageNumber) {
+    protected @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber) {
         List<Position> positions = this.maskPositionFunction.apply(uuid);
-        List<Function<@NotNull UUID, @Nullable ActionItem>> buttons = getButtons(uuid);
+        List<BiPredicate<UUID, ActionItem>> buttons = getButtons(uuid);
         if (buttons.isEmpty() || positions.isEmpty()) return null;
 
         int pageAmount = buttons.size();
         pageAmount = this.getAndSetExactPage(uuid, pageNumber, pageAmount);
 
-        Map<Position, ActionItem> map = new HashMap<>();
+        Map<Position, Consumer<ActionItem>> map = new HashMap<>();
         int basePage = this.getPage(uuid);
         int buttonsSize = buttons.size();
         int positionSize = positions.size();
@@ -66,10 +68,8 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
             } else if (index >= buttonsSize) {
                 break;
             }
-            ActionItem actionItem = buttons.get(index).apply(uuid);
-            if (actionItem != null) {
-                map.put(positions.get(i), actionItem);
-            }
+            BiPredicate<UUID, ActionItem> button = buttons.get(index);
+            map.put(positions.get(i), actionItem -> button.test(uuid, actionItem));
         }
 
         return map;
