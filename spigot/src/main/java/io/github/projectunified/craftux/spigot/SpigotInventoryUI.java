@@ -5,13 +5,10 @@ import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -62,17 +59,6 @@ public class SpigotInventoryUI implements InventoryHolder {
      */
     public SpigotInventoryUI(UUID viewerId, String title, InventoryType type) {
         this(viewerId, holder -> Bukkit.createInventory(holder, type, title));
-    }
-
-    /**
-     * Register the inventory listener. Must be called once.
-     *
-     * @param plugin the plugin
-     */
-    public static Listener register(Plugin plugin) {
-        Listener listener = new InventoryListener();
-        Bukkit.getPluginManager().registerEvents(listener, plugin);
-        return listener;
     }
 
     @Override
@@ -248,62 +234,5 @@ public class SpigotInventoryUI implements InventoryHolder {
      * @param event the event
      */
     protected void onDrag(InventoryDragEvent event) {
-    }
-
-    /**
-     * The inventory listener
-     */
-    public static class InventoryListener implements Listener {
-        private SpigotInventoryUI getUI(InventoryEvent event) {
-            InventoryHolder holder = event.getInventory().getHolder();
-            if (holder instanceof SpigotInventoryUI) {
-                return (SpigotInventoryUI) holder;
-            }
-            return null;
-        }
-
-        @EventHandler
-        public void onOpen(InventoryOpenEvent event) {
-            SpigotInventoryUI ui = getUI(event);
-            if (ui == null) return;
-            ui.onOpen(event);
-        }
-
-        @EventHandler
-        public void onClick(InventoryClickEvent event) {
-            SpigotInventoryUI ui = getUI(event);
-            if (ui == null) return;
-
-            boolean wasCancelled = event.isCancelled();
-            event.setCancelled(true);
-
-            ui.handleClick(event);
-
-            if (!wasCancelled && !event.isCancelled()) {
-                event.setCancelled(false);
-            }
-        }
-
-        @EventHandler
-        public void onClose(InventoryCloseEvent event) {
-            SpigotInventoryUI ui = getUI(event);
-            if (ui == null) return;
-            ui.onClose(event);
-        }
-
-        @EventHandler
-        public void onDrag(InventoryDragEvent event) {
-            SpigotInventoryUI ui = getUI(event);
-            if (ui == null) return;
-
-            boolean wasCancelled = event.isCancelled();
-            event.setCancelled(true);
-
-            ui.handleDrag(event);
-
-            if (!wasCancelled && !event.isCancelled()) {
-                event.setCancelled(false);
-            }
-        }
     }
 }
