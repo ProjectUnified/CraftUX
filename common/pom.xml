@@ -10,4 +10,5 @@
     </parent>
 
     <artifactId>craftux-common</artifactId>
+    <name>CraftUX Common</name>
 </project>

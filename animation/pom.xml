@@ -10,4 +10,5 @@
     </parent>
 
     <artifactId>craftux-animation</artifactId>
+    <name>CraftUX Animation</name>
 </project>

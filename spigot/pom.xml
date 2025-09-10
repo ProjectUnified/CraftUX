@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>craftux-spigot</artifactId>
+    <name>CraftUX Spigot</name>
 
     <repositories>
         <repository>

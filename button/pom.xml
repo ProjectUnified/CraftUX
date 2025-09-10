@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>craftux-button</artifactId>
+    <name>CraftUX Button</name>
 
     <dependencies>
         <dependency>

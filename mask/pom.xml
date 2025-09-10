@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>craftux-mask</artifactId>
+    <name>CraftUX Mask</name>
 
     <dependencies>
         <dependency>
