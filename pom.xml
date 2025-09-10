@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <name>CraftUX</name>
-    <description>A unified library for user interfaces</description>
+    <description>A unified library for Minecraft grid-like user interfaces</description>
     <url>https://github.com/ProjectUnified/CraftUX</url>
 
     <licenses>
