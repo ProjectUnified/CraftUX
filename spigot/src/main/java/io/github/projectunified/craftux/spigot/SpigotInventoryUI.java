@@ -73,32 +73,6 @@ public class SpigotInventoryUI implements InventoryHolder {
         Bukkit.getPluginManager().registerEvents(new InventoryListener(), plugin);
     }
 
-    /**
-     * Convert a position to a slot index
-     *
-     * @param position the position
-     * @return the slot index
-     */
-    protected int toSlot(Position position) {
-        int slotPerRow;
-        switch (inventory.getType()) {
-            case CHEST:
-            case ENDER_CHEST:
-            case SHULKER_BOX:
-                slotPerRow = 9;
-                break;
-            case DISPENSER:
-            case DROPPER:
-            case HOPPER:
-                slotPerRow = 3;
-                break;
-            default:
-                slotPerRow = inventory.getSize();
-                break;
-        }
-        return position.getX() + position.getY() * slotPerRow;
-    }
-
     @Override
     public Inventory getInventory() {
         return inventory;
@@ -171,7 +145,7 @@ public class SpigotInventoryUI implements InventoryHolder {
         }
 
         Map<Integer, Consumer<ActionItem>> newItemMap = positionActionItemMap.entrySet().stream()
-                .collect(Collectors.toMap(entry -> toSlot(entry.getKey()), Map.Entry::getValue));
+                .collect(Collectors.toMap(entry -> SpigotInventoryUtil.toSlot(entry.getKey(), inventory.getType()), Map.Entry::getValue));
 
         Map<Integer, Consumer<Object>> consumerMap = new HashMap<>();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
