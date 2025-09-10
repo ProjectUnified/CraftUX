@@ -1,21 +1,16 @@
 package io.github.projectunified.craftux.mask;
 
-import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
-import io.github.projectunified.craftux.common.Position;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import io.github.projectunified.craftux.common.Mask;
 
 import java.util.*;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * A base mask that handles multiple child elements
  *
  * @param <T> the type of the child element
  */
-public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
+public abstract class MultiMask<T> implements Element, Mask {
     protected final List<T> elements = new ArrayList<>();
 
     /**
