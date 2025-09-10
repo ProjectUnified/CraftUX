@@ -69,8 +69,10 @@ public class SpigotInventoryUI implements InventoryHolder {
      *
      * @param plugin the plugin
      */
-    public static void register(Plugin plugin) {
-        Bukkit.getPluginManager().registerEvents(new InventoryListener(), plugin);
+    public static Listener register(Plugin plugin) {
+        Listener listener = new InventoryListener();
+        Bukkit.getPluginManager().registerEvents(listener, plugin);
+        return listener;
     }
 
     @Override
