@@ -1,3 +1,3 @@
 # CraftUX
 
-A unified API for Minecraft grid-like user interfaces
+A unified library for Minecraft grid-like user interfaces
