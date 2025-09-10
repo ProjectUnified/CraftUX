@@ -2,18 +2,18 @@ package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.animation.Animation;
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Button;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiPredicate;
 
 /**
  * The animated button with child buttons as frames
  */
 public class AnimatedButton extends MultiButton {
-    private final Map<UUID, Animation<BiPredicate<@NotNull UUID, @NotNull ActionItem>>> animationMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Animation<Button>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50L;
 
     @Override
@@ -33,7 +33,7 @@ public class AnimatedButton extends MultiButton {
         this.periodMillis = periodMillis;
     }
 
-    private Animation<BiPredicate<@NotNull UUID, @NotNull ActionItem>> getAnimation(UUID uuid) {
+    private Animation<Button> getAnimation(UUID uuid) {
         return animationMap.computeIfAbsent(uuid, key -> new Animation<>(buttons, periodMillis));
     }
 
@@ -44,7 +44,7 @@ public class AnimatedButton extends MultiButton {
     }
 
     @Override
-    public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
-        return getAnimation(uuid).getCurrentFrame().test(uuid, actionItem);
+    public boolean apply(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
+        return getAnimation(uuid).getCurrentFrame().apply(uuid, actionItem);
     }
 }

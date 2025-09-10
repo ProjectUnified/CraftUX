@@ -1,20 +1,16 @@
 package io.github.projectunified.craftux.simple;
 
-import io.github.projectunified.craftux.common.ActionItem;
-import io.github.projectunified.craftux.common.Element;
-import io.github.projectunified.craftux.common.Position;
+import io.github.projectunified.craftux.common.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * A simple button mask
  */
-public class SimpleButtonMask implements Element, Function<@NotNull UUID, @NotNull Map<Position, Consumer<ActionItem>>> {
-    private final Map<BiPredicate<@NotNull UUID, @NotNull ActionItem>, Collection<Position>> buttonSlotMap = new LinkedHashMap<>();
+public class SimpleButtonMask implements Element, Mask {
+    private final Map<Button, Collection<Position>> buttonSlotMap = new LinkedHashMap<>();
 
     /**
      * Set the button
@@ -22,7 +18,7 @@ public class SimpleButtonMask implements Element, Function<@NotNull UUID, @NotNu
      * @param position the position
      * @param button   the button
      */
-    public void setButton(Position position, @NotNull BiPredicate<@NotNull UUID, @NotNull ActionItem> button) {
+    public void setButton(Position position, @NotNull Button button) {
         buttonSlotMap.computeIfAbsent(button, b -> new ArrayList<>()).add(position);
     }
 
@@ -42,15 +38,14 @@ public class SimpleButtonMask implements Element, Function<@NotNull UUID, @NotNu
         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
 
         buttonSlotMap.forEach(
-                (button, positions) ->
-                        positions.forEach(position -> {
-                            Consumer<ActionItem> consumer = actionItem -> button.test(uuid, actionItem);
-                            map.merge(
-                                    position,
-                                    consumer,
-                                    Consumer::andThen
-                            );
-                        })
+                (button, positions) -> {
+                    Consumer<ActionItem> consumer = button.apply(uuid);
+                    positions.forEach(position -> map.merge(
+                            position,
+                            consumer,
+                            Consumer::andThen
+                    ));
+                }
         );
 
         return map;

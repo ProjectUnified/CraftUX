@@ -2,6 +2,7 @@ package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
+import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,9 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
-public abstract class PaginatedMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
+public abstract class PaginatedMask implements Element, Mask {
     protected final Map<UUID, Integer> pageNumberMap = new ConcurrentHashMap<>();
     protected boolean cycle = false;
 

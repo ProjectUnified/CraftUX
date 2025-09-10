@@ -2,6 +2,7 @@ package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.animation.Animation;
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,13 +11,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * The animated mask with child masks as frames, but only run once
  */
-public class OneTimeAnimatedMask extends MultiMask<Map<Position, Consumer<ActionItem>>> {
-    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>>> animationMap = new ConcurrentHashMap<>();
+public class OneTimeAnimatedMask extends MultiMask<Mask> {
+    private final Map<UUID, Animation<Mask>> animationMap = new ConcurrentHashMap<>();
     private boolean viewLast = false;
     private long periodMillis = 50L;
 
@@ -55,7 +55,7 @@ public class OneTimeAnimatedMask extends MultiMask<Map<Position, Consumer<Action
         getAnimation(uuid).reset();
     }
 
-    private Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getAnimation(@NotNull UUID uuid) {
+    private Animation<Mask> getAnimation(@NotNull UUID uuid) {
         return animationMap.computeIfAbsent(uuid, key -> new Animation<>(elements, periodMillis));
     }
 
@@ -67,7 +67,7 @@ public class OneTimeAnimatedMask extends MultiMask<Map<Position, Consumer<Action
 
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
-        Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> animation = getAnimation(uuid);
+        Animation<Mask> animation = getAnimation(uuid);
         long currentMillis = System.currentTimeMillis();
         if (animation.isFirstRun(currentMillis)) {
             return animation.getCurrentFrame(currentMillis).apply(uuid);

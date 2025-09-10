@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Button;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +15,7 @@ import java.util.function.Function;
 /**
  * The masks with multiple positions
  */
-public class MultiPositionMask extends MultiMask<Consumer<ActionItem>> {
+public class MultiPositionMask extends MultiMask<Button> {
     protected final Function<UUID, List<Position>> maskPositionFunction;
 
     /**
@@ -44,8 +45,7 @@ public class MultiPositionMask extends MultiMask<Consumer<ActionItem>> {
             int positionSize = positions.size();
             int buttonsSize = this.elements.size();
             for (int i = 0; i < positionSize; i++) {
-                Consumer<ActionItem> item = this.elements.get(i % buttonsSize).apply(uuid);
-                map.put(positions.get(i), item);
+                map.put(positions.get(i), this.elements.get(i % buttonsSize).apply(uuid));
             }
         }
         return map;

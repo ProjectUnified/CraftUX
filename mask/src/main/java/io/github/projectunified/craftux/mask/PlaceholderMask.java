@@ -2,6 +2,7 @@ package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Element;
+import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,14 +12,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * The placeholder mask <br> Used for per-user masks
  */
-public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
-    protected final Map<UUID, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> userMasks = new ConcurrentHashMap<>();
-    protected Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> defaultMask = context -> null;
+public class PlaceholderMask implements Element, Mask {
+    protected final Map<UUID, Mask> userMasks = new ConcurrentHashMap<>();
+    protected Mask defaultMask = context -> null;
 
     @Override
     public void init() {
@@ -42,7 +42,7 @@ public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullab
      * @param uuid the unique id
      * @param mask the mask
      */
-    public void setMask(@NotNull UUID uuid, @Nullable Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> mask) {
+    public void setMask(@NotNull UUID uuid, @Nullable Mask mask) {
         if (mask == null) {
             this.userMasks.remove(uuid);
         } else {
@@ -57,7 +57,7 @@ public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullab
      * @return the mask
      */
     @Nullable
-    public Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> getMask(@NotNull UUID uuid) {
+    public Mask getMask(@NotNull UUID uuid) {
         return this.userMasks.get(uuid);
     }
 
@@ -67,7 +67,7 @@ public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullab
      * @return the default mask
      */
     @NotNull
-    public Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> getDefaultMask() {
+    public Mask getDefaultMask() {
         return defaultMask;
     }
 
@@ -76,7 +76,7 @@ public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullab
      *
      * @param defaultMask the default mask
      */
-    public void setDefaultMask(@NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> defaultMask) {
+    public void setDefaultMask(@NotNull Mask defaultMask) {
         this.defaultMask = defaultMask;
     }
 
@@ -86,7 +86,7 @@ public class PlaceholderMask implements Element, Function<@NotNull UUID, @Nullab
      * @return the user-mask map
      */
     @NotNull
-    public Map<@NotNull UUID, @NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getUserMasks() {
+    public Map<UUID, Mask> getUserMasks() {
         return Collections.unmodifiableMap(this.userMasks);
     }
 }

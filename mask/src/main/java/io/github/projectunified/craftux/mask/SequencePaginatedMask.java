@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Button;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,7 +10,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -45,12 +45,12 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
      * @return the buttons
      */
     @NotNull
-    public abstract List<@NotNull BiPredicate<@NotNull UUID, @NotNull ActionItem>> getButtons(@NotNull UUID uuid);
+    public abstract List<Button> getButtons(@NotNull UUID uuid);
 
     @Override
     protected @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber) {
         List<Position> positions = this.maskPositionFunction.apply(uuid);
-        List<BiPredicate<UUID, ActionItem>> buttons = getButtons(uuid);
+        List<Button> buttons = getButtons(uuid);
         if (buttons.isEmpty() || positions.isEmpty()) return null;
 
         int pageAmount = buttons.size();
@@ -68,8 +68,8 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
             } else if (index >= buttonsSize) {
                 break;
             }
-            BiPredicate<UUID, ActionItem> button = buttons.get(index);
-            map.put(positions.get(i), actionItem -> button.test(uuid, actionItem));
+            Button button = buttons.get(index);
+            map.put(positions.get(i), button.apply(uuid));
         }
 
         return map;

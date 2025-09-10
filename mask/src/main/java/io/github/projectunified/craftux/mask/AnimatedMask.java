@@ -2,6 +2,7 @@ package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.animation.Animation;
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,13 +11,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * The animated mask with child masks as frames
  */
-public class AnimatedMask extends MultiMask<Map<Position, Consumer<ActionItem>>> {
-    private final Map<UUID, Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>>> animationMap = new ConcurrentHashMap<>();
+public class AnimatedMask extends MultiMask<Mask> {
+    private final Map<UUID, Animation<Mask>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50;
 
     @Override
@@ -36,7 +36,7 @@ public class AnimatedMask extends MultiMask<Map<Position, Consumer<ActionItem>>>
         this.periodMillis = periodMillis;
     }
 
-    private Animation<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getAnimation(@NotNull UUID uuid) {
+    private Animation<Mask> getAnimation(@NotNull UUID uuid) {
         return animationMap.computeIfAbsent(uuid, k -> new Animation<>(elements, periodMillis));
     }
 

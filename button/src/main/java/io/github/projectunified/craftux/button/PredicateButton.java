@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Button;
 import io.github.projectunified.craftux.common.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -12,9 +13,9 @@ import java.util.function.Predicate;
 /**
  * The button with predicates
  */
-public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nullable ActionItem> {
-    private @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> button = null;
-    private @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> fallbackButton = null;
+public class PredicateButton implements Element, Button {
+    private @Nullable Button button = null;
+    private @Nullable Button fallbackButton = null;
     private @Nullable Predicate<UUID> viewPredicate = null;
     private @Nullable Predicate<Object> actionPredicate = null;
 
@@ -106,7 +107,7 @@ public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nul
      *
      * @return the button
      */
-    public @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> getButton() {
+    public @Nullable Button getButton() {
         return button;
     }
 
@@ -115,7 +116,7 @@ public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nul
      *
      * @param button the button
      */
-    public void setButton(@Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> button) {
+    public void setButton(@Nullable Button button) {
         this.button = button;
     }
 
@@ -124,7 +125,7 @@ public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nul
      *
      * @return the fallback button
      */
-    public @Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> getFallbackButton() {
+    public @Nullable Button getFallbackButton() {
         return fallbackButton;
     }
 
@@ -133,18 +134,18 @@ public class PredicateButton implements Element, BiPredicate<@NotNull UUID, @Nul
      *
      * @param fallbackButton the fallback button
      */
-    public void setFallbackButton(@Nullable BiPredicate<@NotNull UUID, @NotNull ActionItem> fallbackButton) {
+    public void setFallbackButton(@Nullable Button fallbackButton) {
         this.fallbackButton = fallbackButton;
     }
 
     @Override
-    public boolean test(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
-        BiPredicate<@NotNull UUID, @NotNull ActionItem> buttonToUse = viewPredicate == null || viewPredicate.test(uuid) ? button : fallbackButton;
+    public boolean apply(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
+        Button buttonToUse = viewPredicate == null || viewPredicate.test(uuid) ? button : fallbackButton;
         if (buttonToUse == null) {
             return false;
         }
 
-        boolean result = buttonToUse.test(uuid, actionItem);
+        boolean result = buttonToUse.apply(uuid, actionItem);
         if (actionPredicate != null) {
             actionItem.extendAction((event, action) -> {
                 if (actionPredicate.test(event)) {

@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * The mask paginated mask, those with a long list of masks divided into pages.
@@ -22,11 +22,11 @@ public abstract class MaskPaginatedMask extends PaginatedMask {
      * @return the masks
      */
     @NotNull
-    public abstract List<@NotNull Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> getMasks(@NotNull UUID uuid);
+    public abstract List<Mask> getMasks(@NotNull UUID uuid);
 
     @Override
     protected @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber) {
-        List<Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>>> masks = getMasks(uuid);
+        List<Mask> masks = getMasks(uuid);
         if (masks.isEmpty()) {
             return null;
         }

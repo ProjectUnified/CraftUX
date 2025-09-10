@@ -13,10 +13,10 @@ import java.util.function.Function;
 /**
  * A base mask that handles multiple child elements
  *
- * @param <T> the type of the return value of the child element
+ * @param <T> the type of the child element
  */
 public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @Nullable Map<Position, Consumer<ActionItem>>> {
-    protected final List<Function<@NotNull UUID, @Nullable T>> elements = new ArrayList<>();
+    protected final List<T> elements = new ArrayList<>();
 
     /**
      * Whether this mask requires child elements
@@ -33,7 +33,7 @@ public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @
      * @param elements the child elements
      * @param <R>      the type of the child elements
      */
-    public <R extends Function<@NotNull UUID, @Nullable T>> void add(Collection<R> elements) {
+    public <R extends T> void add(Collection<R> elements) {
         this.elements.addAll(elements);
     }
 
@@ -43,7 +43,7 @@ public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @
      * @param elements the child elements
      */
     @SafeVarargs
-    public final void add(Function<@NotNull UUID, @Nullable T>... elements) {
+    public final void add(T... elements) {
         add(Arrays.asList(elements));
     }
 
@@ -52,7 +52,7 @@ public abstract class MultiMask<T> implements Element, Function<@NotNull UUID, @
      *
      * @return the child elements
      */
-    public final List<Function<@NotNull UUID, @Nullable T>> getElements() {
+    public final List<T> getElements() {
         return Collections.unmodifiableList(this.elements);
     }
 
