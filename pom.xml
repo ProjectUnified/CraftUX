@@ -35,6 +35,7 @@
         <module>mask</module>
         <module>simple</module>
         <module>spigot</module>
+        <module>spigot-button</module>
     </modules>
 
     <issueManagement>
