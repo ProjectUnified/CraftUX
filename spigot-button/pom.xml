@@ -10,6 +10,7 @@
     </parent>
 
     <artifactId>craftux-spigot-button</artifactId>
+    <name>CraftUX Spigot Button</name>
 
     <repositories>
         <repository>
