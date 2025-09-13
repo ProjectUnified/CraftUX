@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.spigot;
 
 import io.github.projectunified.craftux.common.ActionItem;
+import io.github.projectunified.craftux.common.Button;
 import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
 import org.bukkit.Bukkit;
@@ -26,6 +27,7 @@ public class SpigotInventoryUI implements InventoryHolder {
     private final Inventory inventory;
     private final AtomicReference<Map<Integer, Consumer<Object>>> eventConsumerMapRef = new AtomicReference<>();
     private Mask mask;
+    private Button defaultButton;
     private boolean moveItemOnBottom = false;
 
     /**
@@ -113,6 +115,24 @@ public class SpigotInventoryUI implements InventoryHolder {
     }
 
     /**
+     * Get the default button. This button is used when an item is not explicitly defined in the mask.
+     *
+     * @return the default button
+     */
+    public Button getDefaultButton() {
+        return defaultButton;
+    }
+
+    /**
+     * Set the default button. This button is used when an item is not explicitly defined in the mask.
+     *
+     * @param defaultButton the default button
+     */
+    public void setDefaultButton(Button defaultButton) {
+        this.defaultButton = defaultButton;
+    }
+
+    /**
      * Whether to allow moving items in the bottom inventory (player inventory)
      *
      * @param moveItemOnBottom true to allow moving items in the bottom inventory
@@ -135,9 +155,16 @@ public class SpigotInventoryUI implements InventoryHolder {
         Map<Integer, Consumer<ActionItem>> newItemMap = positionActionItemMap.entrySet().stream()
                 .collect(Collectors.toMap(entry -> SpigotInventoryUtil.toSlot(entry.getKey(), inventory.getType()), Map.Entry::getValue));
 
+        Consumer<ActionItem> defaultActionItemConsumer = defaultButton == null ? null : defaultButton.apply(viewerId);
+
         Map<Integer, Consumer<Object>> consumerMap = new HashMap<>();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
             ActionItem actionItem = new ActionItem();
+
+            if (defaultActionItemConsumer != null) {
+                defaultActionItemConsumer.accept(actionItem);
+            }
+
             Consumer<ActionItem> actionItemConsumer = newItemMap.get(slot);
             if (actionItemConsumer != null) {
                 actionItemConsumer.accept(actionItem);
