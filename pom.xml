@@ -36,6 +36,7 @@
         <module>simple</module>
         <module>spigot</module>
         <module>spigot-button</module>
+        <module>minestom</module>
     </modules>
 
     <issueManagement>
