@@ -22,6 +22,15 @@ public class SimpleButtonMask implements Element, Mask {
         buttonSlotMap.computeIfAbsent(button, b -> new ArrayList<>()).add(position);
     }
 
+    /**
+     * Get the button-to-slot map
+     *
+     * @return the button-to-slot map
+     */
+    public Map<Button, Collection<Position>> getButtonSlotMap() {
+        return Collections.unmodifiableMap(buttonSlotMap);
+    }
+
     @Override
     public void init() {
         Element.handleIfElement(buttonSlotMap.keySet(), Element::init);
