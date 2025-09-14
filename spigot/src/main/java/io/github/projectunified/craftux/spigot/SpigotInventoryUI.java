@@ -206,7 +206,9 @@ public class SpigotInventoryUI implements InventoryHolder {
             }
         }
 
-        this.onClick(event);
+        if (!this.onClick(event)) {
+            return;
+        }
 
         Map<Integer, Consumer<Object>> consumerMap = eventConsumerMapRef.get();
         if (consumerMap == null) return;
@@ -252,8 +254,10 @@ public class SpigotInventoryUI implements InventoryHolder {
      * Called when the inventory is clicked. Override to add custom behavior.
      *
      * @param event the event
+     * @return true if the action in the inventory can be performed
      */
-    protected void onClick(InventoryClickEvent event) {
+    protected boolean onClick(InventoryClickEvent event) {
+        return true;
     }
 
     /**
