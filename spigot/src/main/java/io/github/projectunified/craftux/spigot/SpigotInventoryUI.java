@@ -159,7 +159,7 @@ public class SpigotInventoryUI implements InventoryHolder {
 
         Map<Integer, Consumer<Object>> consumerMap = new HashMap<>();
         for (int slot = 0; slot < inventory.getSize(); slot++) {
-            ActionItem actionItem = new ActionItem();
+            ActionItem actionItem = this.createActionItem();
 
             if (defaultActionItemConsumer != null) {
                 defaultActionItemConsumer.accept(actionItem);
@@ -229,6 +229,15 @@ public class SpigotInventoryUI implements InventoryHolder {
         }
 
         this.onDrag(event);
+    }
+
+    /**
+     * Create an action item. Override this to add default logic to the item.
+     *
+     * @return the action item
+     */
+    protected ActionItem createActionItem() {
+        return new ActionItem();
     }
 
     /**
