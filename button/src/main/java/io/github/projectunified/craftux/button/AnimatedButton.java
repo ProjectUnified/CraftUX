@@ -16,11 +16,6 @@ public class AnimatedButton extends MultiButton {
     private final Map<UUID, Animation<Button>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50L;
 
-    @Override
-    protected boolean requireChildButtons() {
-        return true;
-    }
-
     /**
      * Set the period of the animation
      *
@@ -45,6 +40,7 @@ public class AnimatedButton extends MultiButton {
 
     @Override
     public boolean apply(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
+        if (this.buttons.isEmpty()) return false;
         return getAnimation(uuid).getCurrentFrame().apply(uuid, actionItem);
     }
 }

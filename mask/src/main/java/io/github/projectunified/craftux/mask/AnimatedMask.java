@@ -19,11 +19,6 @@ public class AnimatedMask extends MultiMask<Mask> {
     private final Map<UUID, Animation<Mask>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50;
 
-    @Override
-    protected boolean requireChildElements() {
-        return true;
-    }
-
     /**
      * Set the period of the animation
      *
@@ -48,6 +43,7 @@ public class AnimatedMask extends MultiMask<Mask> {
 
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        if (elements.isEmpty()) return null;
         return getAnimation(uuid).getCurrentFrame().apply(uuid);
     }
 }

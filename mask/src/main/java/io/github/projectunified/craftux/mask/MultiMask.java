@@ -14,15 +14,6 @@ public abstract class MultiMask<T> implements Element, Mask {
     protected final List<T> elements = new ArrayList<>();
 
     /**
-     * Whether this mask requires child elements
-     *
-     * @return true if it requires child elements
-     */
-    protected boolean requireChildElements() {
-        return false;
-    }
-
-    /**
      * Add child elements
      *
      * @param elements the child elements
@@ -53,9 +44,6 @@ public abstract class MultiMask<T> implements Element, Mask {
 
     @Override
     public void init() {
-        if (requireChildElements() && this.elements.isEmpty()) {
-            throw new IllegalArgumentException("There is no child element for this mask");
-        }
         Element.handleIfElement(this.elements, Element::init);
     }
 

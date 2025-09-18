@@ -20,11 +20,6 @@ public class OneTimeAnimatedMask extends MultiMask<Mask> {
     private boolean viewLast = false;
     private long periodMillis = 50L;
 
-    @Override
-    protected boolean requireChildElements() {
-        return true;
-    }
-
     /**
      * Set the period of the animation
      *
@@ -67,6 +62,8 @@ public class OneTimeAnimatedMask extends MultiMask<Mask> {
 
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
+        if (elements.isEmpty()) return null;
+
         Animation<Mask> animation = getAnimation(uuid);
         long currentMillis = System.currentTimeMillis();
         if (animation.isFirstRun(currentMillis)) {

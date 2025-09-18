@@ -13,15 +13,6 @@ public abstract class MultiButton implements Element, Button {
     protected final List<Button> buttons = new ArrayList<>();
 
     /**
-     * Whether to require child buttons
-     *
-     * @return true if child buttons are required
-     */
-    protected boolean requireChildButtons() {
-        return false;
-    }
-
-    /**
      * Add child buttons
      *
      * @param buttons the child buttons
@@ -51,9 +42,6 @@ public abstract class MultiButton implements Element, Button {
 
     @Override
     public void init() {
-        if (requireChildButtons() && this.buttons.isEmpty()) {
-            throw new IllegalArgumentException("There is no child button for this button");
-        }
         Element.handleIfElement(this.buttons, Element::init);
     }
 
