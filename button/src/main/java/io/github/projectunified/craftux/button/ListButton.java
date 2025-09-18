@@ -48,7 +48,7 @@ public class ListButton extends MultiButton {
             return buttons.get(currentIndexMap.get(uuid)).apply(uuid, actionItem);
         }
 
-        for (int i = 0; i < getButtons().size(); i++) {
+        for (int i = 0; i < buttons.size(); i++) {
             Button button = buttons.get(i);
             if (button.apply(uuid, actionItem)) {
                 currentIndexMap.put(uuid, i);
@@ -57,5 +57,11 @@ public class ListButton extends MultiButton {
         }
 
         return false;
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        currentIndexMap.clear();
     }
 }
