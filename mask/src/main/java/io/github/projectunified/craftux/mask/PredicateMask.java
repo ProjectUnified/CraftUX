@@ -16,16 +16,16 @@ import java.util.function.Predicate;
  * The mask with predicate
  */
 public class PredicateMask implements Element, Mask {
-    private Predicate<UUID> viewPredicate = uuid -> true;
-    private Mask mask = uuid -> null;
-    private Mask fallbackMask = uuid -> null;
+    private @Nullable Predicate<UUID> viewPredicate = null;
+    private @Nullable Mask mask = uuid -> null;
+    private @Nullable Mask fallbackMask = uuid -> null;
 
     /**
      * Set the view predicate
      *
      * @param viewPredicate the view predicate
      */
-    public void setViewPredicate(@NotNull Predicate<@NotNull UUID> viewPredicate) {
+    public void setViewPredicate(@Nullable Predicate<@NotNull UUID> viewPredicate) {
         this.viewPredicate = viewPredicate;
     }
 
@@ -34,7 +34,7 @@ public class PredicateMask implements Element, Mask {
      *
      * @return the mask
      */
-    @NotNull
+    @Nullable
     public Mask getMask() {
         return mask;
     }
@@ -44,7 +44,7 @@ public class PredicateMask implements Element, Mask {
      *
      * @param mask the mask
      */
-    public void setMask(@NotNull Mask mask) {
+    public void setMask(@Nullable Mask mask) {
         this.mask = mask;
     }
 
@@ -53,7 +53,7 @@ public class PredicateMask implements Element, Mask {
      *
      * @return the fallback mask
      */
-    @NotNull
+    @Nullable
     public Mask getFallbackMask() {
         return fallbackMask;
     }
@@ -63,7 +63,7 @@ public class PredicateMask implements Element, Mask {
      *
      * @param fallbackMask the fallback mask
      */
-    public void setFallbackMask(@NotNull Mask fallbackMask) {
+    public void setFallbackMask(@Nullable Mask fallbackMask) {
         this.fallbackMask = fallbackMask;
     }
 
@@ -81,10 +81,7 @@ public class PredicateMask implements Element, Mask {
 
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
-        if (viewPredicate.test(uuid)) {
-            return mask.apply(uuid);
-        } else {
-            return fallbackMask.apply(uuid);
-        }
+        Mask maskToUse = viewPredicate == null || viewPredicate.test(uuid) ? mask : fallbackMask;
+        return maskToUse == null ? null : maskToUse.apply(uuid);
     }
 }

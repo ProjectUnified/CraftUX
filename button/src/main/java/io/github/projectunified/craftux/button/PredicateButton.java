@@ -74,10 +74,7 @@ public class PredicateButton implements Element, Button {
     @Override
     public boolean apply(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
         Button buttonToUse = viewPredicate == null || viewPredicate.test(uuid) ? button : fallbackButton;
-        if (buttonToUse == null) {
-            return false;
-        }
-        return buttonToUse.apply(uuid, actionItem);
+        return buttonToUse != null && buttonToUse.apply(uuid, actionItem);
     }
 
     @Override
