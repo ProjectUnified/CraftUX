@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class Animation<T> {
     private final List<T> frames;
     private final long periodMillis;
+    private final AnimationMode mode;
     private final AtomicLong startMillis = new AtomicLong(-1);
 
     /**
@@ -27,9 +28,10 @@ public class Animation<T> {
      *
      * @param frames       the list of frames to cycle through
      * @param periodMillis the period in milliseconds between frame changes
+     * @param mode         the mode of the animation
      * @throws IllegalArgumentException if frames is empty or periodMillis is not positive
      */
-    public Animation(List<T> frames, long periodMillis) {
+    public Animation(List<T> frames, long periodMillis, AnimationMode mode) {
         if (frames.isEmpty()) {
             throw new IllegalArgumentException("Frames cannot be empty");
         }
@@ -39,6 +41,18 @@ public class Animation<T> {
 
         this.frames = frames;
         this.periodMillis = periodMillis;
+        this.mode = mode;
+    }
+
+    /**
+     * Creates a new Animation with the specified frames and period.
+     *
+     * @param frames       the list of frames to cycle through
+     * @param periodMillis the period in milliseconds between frame changes
+     * @throws IllegalArgumentException if frames is empty or periodMillis is not positive
+     */
+    public Animation(List<T> frames, long periodMillis) {
+        this(frames, periodMillis, AnimationMode.REPEAT);
     }
 
     /**
@@ -62,6 +76,15 @@ public class Animation<T> {
             startMillis = currentMillis;
             this.startMillis.set(startMillis);
         }
+
+        if (!isFirstRun(currentMillis)) {
+            if (mode == AnimationMode.ONE_TIME) {
+                return null;
+            } else if (mode == AnimationMode.ONE_TIME_KEEP_LAST) {
+                return frames.getLast();
+            }
+        }
+
         long diff = currentMillis - startMillis;
         int index = (int) (diff / periodMillis) % frames.size();
         return frames.get(index);

@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.mask;
 
 import io.github.projectunified.craftux.animation.Animation;
+import io.github.projectunified.craftux.animation.AnimationMode;
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Mask;
 import io.github.projectunified.craftux.common.Position;
@@ -31,6 +32,7 @@ import java.util.function.Consumer;
 public class AnimatedMask extends MultiMask<Mask> {
     private final Map<UUID, Animation<Mask>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50;
+    private AnimationMode mode = AnimationMode.REPEAT;
 
     /**
      * Set the period of the animation
@@ -44,8 +46,17 @@ public class AnimatedMask extends MultiMask<Mask> {
         this.periodMillis = periodMillis;
     }
 
+    /**
+     * Set the mode of the animation
+     *
+     * @param mode the mode of the animation
+     */
+    public void setMode(AnimationMode mode) {
+        this.mode = mode;
+    }
+
     private Animation<Mask> getAnimation(@NotNull UUID uuid) {
-        return animationMap.computeIfAbsent(uuid, k -> new Animation<>(elements, periodMillis));
+        return animationMap.computeIfAbsent(uuid, k -> new Animation<>(elements, periodMillis, mode));
     }
 
     @Override

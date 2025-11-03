@@ -1,6 +1,7 @@
 package io.github.projectunified.craftux.button;
 
 import io.github.projectunified.craftux.animation.Animation;
+import io.github.projectunified.craftux.animation.AnimationMode;
 import io.github.projectunified.craftux.common.ActionItem;
 import io.github.projectunified.craftux.common.Button;
 import org.jetbrains.annotations.NotNull;
@@ -26,6 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AnimatedButton extends MultiButton {
     private final Map<UUID, Animation<Button>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50L;
+    private AnimationMode mode = AnimationMode.REPEAT;
 
     /**
      * Sets the period of the animation between frame changes.
@@ -40,8 +42,17 @@ public class AnimatedButton extends MultiButton {
         this.periodMillis = periodMillis;
     }
 
+    /**
+     * Set the mode of the animation
+     *
+     * @param mode the mode of the animation
+     */
+    public void setMode(AnimationMode mode) {
+        this.mode = mode;
+    }
+
     private Animation<Button> getAnimation(UUID uuid) {
-        return animationMap.computeIfAbsent(uuid, key -> new Animation<>(buttons, periodMillis));
+        return animationMap.computeIfAbsent(uuid, key -> new Animation<>(buttons, periodMillis, mode));
     }
 
     @Override
