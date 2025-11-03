@@ -7,7 +7,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 /**
- * A base button that handles multiple child buttons
+ * A base class for buttons that manage multiple child buttons.
+ * Provides functionality to add, retrieve, and manage lifecycle of child buttons.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * MultiButton multiButton = new MyMultiButton();
+ * multiButton.addButton(
+ *     new SimpleButton(new ItemStack(Material.RED_WOOL)),
+ *     new SimpleButton(new ItemStack(Material.BLUE_WOOL))
+ * );
+ * List<Button> buttons = multiButton.getButtons();
+ * }</pre>
  */
 public abstract class MultiButton implements Element, Button {
     protected final List<Button> buttons = new ArrayList<>();

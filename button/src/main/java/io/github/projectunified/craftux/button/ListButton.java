@@ -9,7 +9,18 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The button that loops through the list of child buttons
+ * A button that applies actions from a list of child buttons, cycling through them.
+ * It can optionally remember the current button index per player UUID.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * ListButton listButton = new ListButton();
+ * listButton.addButton(
+ *     new SimpleButton(new ItemStack(Material.STONE)),
+ *     new SimpleButton(new ItemStack(Material.COBBLESTONE))
+ * );
+ * listButton.setKeepCurrentIndex(true); // Remember choice per player
+ * }</pre>
  */
 public class ListButton extends MultiButton {
     private final Map<UUID, Integer> currentIndexMap = new ConcurrentHashMap<>();

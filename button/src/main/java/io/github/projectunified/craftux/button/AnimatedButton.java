@@ -10,16 +10,28 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The animated button with child buttons as frames
+ * A button that cycles through a list of buttons as animation frames over time.
+ * Each frame is displayed for a configurable period, creating an animated effect.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * AnimatedButton animatedButton = new AnimatedButton();
+ * animatedButton.addButton(
+ *     new SimpleButton(new ItemStack(Material.DIAMOND)),
+ *     new SimpleButton(new ItemStack(Material.EMERALD))
+ * );
+ * animatedButton.setPeriodMillis(100); // 100ms per frame
+ * }</pre>
  */
 public class AnimatedButton extends MultiButton {
     private final Map<UUID, Animation<Button>> animationMap = new ConcurrentHashMap<>();
     private long periodMillis = 50L;
 
     /**
-     * Set the period of the animation
+     * Sets the period of the animation between frame changes.
      *
      * @param periodMillis the period in milliseconds
+     * @throws IllegalArgumentException if periodMillis is not positive
      */
     public void setPeriodMillis(long periodMillis) {
         if (periodMillis <= 0) {

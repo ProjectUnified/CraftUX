@@ -10,7 +10,16 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * The utility class for masks
+ * Utility class providing static methods for generating position lists used in masks.
+ * Includes methods for creating filled areas and outline borders between two positions.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * Position start = Position.of(0, 0);
+ * Position end = Position.of(2, 2);
+ * List<Position> area = MaskUtils.generateAreaPositions(start, end); // 3x3 grid
+ * List<Position> outline = MaskUtils.generateOutlinePositions(start, end); // border
+ * }</pre>
  */
 public class MaskUtils {
 

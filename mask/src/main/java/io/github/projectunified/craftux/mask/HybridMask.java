@@ -11,7 +11,18 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * The mask that views multiple masks
+ * A mask that combines multiple child masks, merging their position-action mappings.
+ * When multiple masks define actions for the same position, they are combined sequentially using Consumer.andThen.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * HybridMask hybridMask = new HybridMask();
+ * hybridMask.add(
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.APPLE))),
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.CARROT)))
+ * );
+ * Map<Position, Consumer<ActionItem>> combinedActions = hybridMask.apply(playerUUID);
+ * }</pre>
  */
 public class HybridMask extends MultiMask<Mask> {
     @Override

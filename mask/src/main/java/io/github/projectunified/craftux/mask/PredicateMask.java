@@ -13,7 +13,17 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * The mask with predicate
+ * A mask that conditionally applies one of two masks based on a predicate
+ * evaluated against the player's UUID. Uses a fallback mask if the predicate fails.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * PredicateMask predicateMask = new PredicateMask();
+ * predicateMask.setMask(adminMask);
+ * predicateMask.setFallbackMask(userMask);
+ * predicateMask.setViewPredicate(uuid -> isAdmin(uuid)); // Check if player is admin
+ * Map<Position, Consumer<ActionItem>> actions = predicateMask.apply(playerUUID);
+ * }</pre>
  */
 public class PredicateMask implements Element, Mask {
     private @Nullable Predicate<UUID> viewPredicate = null;

@@ -9,7 +9,14 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * The simple mask with a single button
+ * A mask that places a single button at a specified position.
+ * Useful for creating simple GUI elements with one interactive item.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * SingleMask mask = new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.ANVIL)));
+ * Map<Position, Consumer<ActionItem>> actions = mask.apply(playerUUID);
+ * }</pre>
  */
 public class SingleMask implements Element, Mask {
     protected final Position position;

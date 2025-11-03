@@ -9,7 +9,23 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * The mask that maps positions to action item consumers
+ * Represents a mask that maps positions to action item consumers for a given player UUID.
+ * Masks define the layout and behavior of GUI elements in a grid-based interface.
+ *
+ * <p>Example implementation:</p>
+ * <pre>{@code
+ * public class MyMask implements Mask {
+ *     @Override
+ *     public Map<Position, Consumer<ActionItem>> apply(UUID uuid) {
+ *         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
+ *         map.put(Position.of(0, 0), actionItem -> {
+ *             actionItem.setItem("Button at 0,0");
+ *             actionItem.setAction(event -> System.out.println("Clicked at 0,0"));
+ *         });
+ *         return map;
+ *     }
+ * }
+ * }</pre>
  */
 public interface Mask {
     /**

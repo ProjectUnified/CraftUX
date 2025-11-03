@@ -14,7 +14,25 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * The button paginated mask, those with a long list of buttons divided into pages.
+ * An abstract mask that displays a paginated list of buttons across multiple pages.
+ * Subclasses define the positions and button lists, while this class handles pagination logic.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class MyButtonPaginatedMask extends ButtonPaginatedMask {
+ *     public MyButtonPaginatedMask() {
+ *         super(uuid -> Arrays.asList(Position.of(0, 0), Position.of(1, 1)));
+ *     }
+ *
+ *     @Override
+ *     public List<Button> getButtons(UUID uuid) {
+ *         return Arrays.asList(
+ *             new SimpleButton(new ItemStack(Material.WOODEN_SWORD)),
+ *             new SimpleButton(new ItemStack(Material.STONE_SWORD))
+ *         );
+ *     }
+ * }
+ * }</pre>
  */
 public abstract class ButtonPaginatedMask extends PaginatedMask {
     private final Function<UUID, List<Position>> maskPositionFunction;
@@ -73,6 +91,9 @@ public abstract class ButtonPaginatedMask extends PaginatedMask {
         return map;
     }
 
+    /**
+     * Clears the page number mappings for all users.
+     */
     @Override
     public void stop() {
         this.pageNumberMap.clear();

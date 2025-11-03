@@ -27,7 +27,18 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
- * The inventory UI for Minestom
+ * Represents an inventory-based user interface for Minestom servers.
+ * Manages the display and interaction of GUI elements in a player's inventory.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * MinestomInventoryUI ui = new MinestomInventoryUI(playerUUID, InventoryType.CHEST_3_ROW, Component.text("My GUI"));
+ * ui.setMask(myMask);
+ * ui.setDefaultButton(new SimpleButton(ItemStack.AIR, event -> {}));
+ * ui.register(); // Register event handlers
+ * ui.update(); // Update inventory contents
+ * ui.open(player); // Open for player
+ * }</pre>
  */
 public class MinestomInventoryUI {
     private final UUID viewerId;

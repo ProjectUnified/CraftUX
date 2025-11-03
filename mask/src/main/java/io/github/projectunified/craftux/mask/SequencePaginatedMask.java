@@ -14,7 +14,28 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A button paginated mask, where each button is a page
+ * A paginated mask that displays a sequence of buttons across multiple pages.
+ * Each page shows a consecutive subset of buttons from the list.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class MySequenceMask extends SequencePaginatedMask {
+ *     public MySequenceMask() {
+ *         super(uuid -> Arrays.asList(Position.of(0, 0), Position.of(1, 0)));
+ *     }
+ *
+ *     @Override
+ *     public List<Button> getButtons(UUID uuid) {
+ *         return Arrays.asList(
+ *             new SimpleButton(new ItemStack(Material.RED_DYE)),
+ *             new SimpleButton(new ItemStack(Material.BLUE_DYE)),
+ *             new SimpleButton(new ItemStack(Material.GREEN_DYE)),
+ *             new SimpleButton(new ItemStack(Material.YELLOW_DYE))
+ *         );
+ *     }
+ * }
+ * // Page 0: red, blue; Page 1: blue, green; Page 2: green, yellow
+ * }</pre>
  */
 public abstract class SequencePaginatedMask extends PaginatedMask {
     protected final Function<UUID, List<Position>> maskPositionFunction;
@@ -75,6 +96,9 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
         return map;
     }
 
+    /**
+     * Clears the page number mappings for all users.
+     */
     @Override
     public void stop() {
         this.pageNumberMap.clear();

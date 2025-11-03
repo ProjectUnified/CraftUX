@@ -10,7 +10,20 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * A simple button
+ * A simple implementation of Button that sets an item and action for an ActionItem.
+ * The item can be a static value or computed per player, and the action handles click events.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * // Static item and action
+ * SimpleButton button = new SimpleButton(new ItemStack(Material.DIAMOND), event -> System.out.println("Clicked"));
+ *
+ * // Dynamic item based on player
+ * SimpleButton dynamicButton = new SimpleButton(
+ *     uuid -> new ItemStack(Material.EMERALD, getPlayerLevel(uuid)),
+ *     event -> System.out.println("Dynamic button clicked")
+ * );
+ * }</pre>
  */
 public class SimpleButton implements Button {
     private final Function<UUID, Object> itemFunction;

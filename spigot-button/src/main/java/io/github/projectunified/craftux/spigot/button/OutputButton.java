@@ -16,7 +16,18 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 /**
- * The button that stores the output button for the viewer
+ * A button that stores an output item per player and allows taking it to the cursor when clicked with an empty cursor.
+ * Useful for creating output slots where players can retrieve items.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * OutputButton outputButton = new OutputButton();
+ * outputButton.setOutputItem(playerUUID, new ItemStack(Material.DIAMOND));
+ * outputButton.setDisplayItemFunction((uuid, item) -> {
+ *     if (item == null) return new ItemStack(Material.AIR);
+ *     return item;
+ * });
+ * }</pre>
  */
 public class OutputButton implements Element, Button {
     private final Map<UUID, ItemStack> map = new IdentityHashMap<>();

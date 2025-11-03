@@ -12,7 +12,22 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * The mask paginated mask, those with a long list of masks divided into pages.
+ * An abstract mask that displays one mask at a time from a list, allowing pagination through multiple masks.
+ * Each page shows the actions from a single mask in the list.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class MyMaskPaginatedMask extends MaskPaginatedMask {
+ *     @Override
+ *     public List<Mask> getMasks(UUID uuid) {
+ *         return Arrays.asList(
+ *             new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.APPLE))),
+ *             new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.BREAD))),
+ *             new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.COOKED_BEEF)))
+ *         );
+ *     }
+ * }
+ * }</pre>
  */
 public abstract class MaskPaginatedMask extends PaginatedMask {
     /**
@@ -35,6 +50,9 @@ public abstract class MaskPaginatedMask extends PaginatedMask {
         return masks.get(pageNumber).apply(uuid);
     }
 
+    /**
+     * Clears the page number mappings for all users.
+     */
     @Override
     public void stop() {
         this.pageNumberMap.clear();

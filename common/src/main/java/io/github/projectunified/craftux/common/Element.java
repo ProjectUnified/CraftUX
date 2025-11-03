@@ -4,7 +4,23 @@ import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * An element of the GUI
+ * Represents an element in the GUI that can be initialized and stopped.
+ * Elements are components that make up the user interface and may require lifecycle management.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class MyElement implements Element {
+ *     @Override
+ *     public void init() {
+ *         // Initialize resources
+ *     }
+ *
+ *     @Override
+ *     public void stop() {
+ *         // Clean up resources
+ *     }
+ * }
+ * }</pre>
  */
 public interface Element {
     /**

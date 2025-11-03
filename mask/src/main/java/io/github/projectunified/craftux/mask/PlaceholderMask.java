@@ -14,7 +14,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * The placeholder mask <br> Used for per-user masks
+ * A mask that allows setting different masks for individual players, with a default mask fallback.
+ * Useful for personalized GUI layouts per user.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * PlaceholderMask placeholderMask = new PlaceholderMask();
+ * placeholderMask.setDefaultMask(new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.STONE))));
+ * placeholderMask.setMask(playerUUID, new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.DIAMOND))));
+ * Map<Position, Consumer<ActionItem>> actions = placeholderMask.apply(playerUUID);
+ * }</pre>
  */
 public class PlaceholderMask implements Element, Mask {
     protected final Map<UUID, Mask> userMasks = new ConcurrentHashMap<>();

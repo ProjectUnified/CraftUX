@@ -3,7 +3,15 @@ package io.github.projectunified.craftux.common;
 import java.util.Objects;
 
 /**
- * The position
+ * Represents a 2D position with x and y coordinates in the GUI grid.
+ * Positions are used to locate elements in the interface.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * Position pos = Position.of(1, 2);
+ * int x = pos.getX(); // 1
+ * int y = pos.getY(); // 2
+ * }</pre>
  */
 public class Position {
     private final int x;

@@ -10,7 +10,16 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 /**
- * The conditional button that chooses a button based on a specific predicate
+ * A button that conditionally applies actions from one of two buttons based on a predicate
+ * evaluated against the player's UUID. Uses a fallback button if the predicate fails.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * PredicateButton predicateButton = new PredicateButton();
+ * predicateButton.setButton(new SimpleButton(new ItemStack(Material.COMMAND_BLOCK)));
+ * predicateButton.setFallbackButton(new SimpleButton(new ItemStack(Material.CHEST)));
+ * predicateButton.setViewPredicate(uuid -> isAdmin(uuid)); // Check if player is admin
+ * }</pre>
  */
 public class PredicateButton implements Element, Button {
     private @Nullable Button button = null;

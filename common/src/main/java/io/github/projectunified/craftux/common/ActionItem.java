@@ -8,7 +8,17 @@ import java.util.function.Consumer;
 import java.util.function.UnaryOperator;
 
 /**
- * The action item
+ * Represents an item with an associated action that can be triggered.
+ * The item can be of any type, and the action is a Consumer that accepts an event object.
+ * This class provides methods to set, get, and extend both the item and the action.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * ActionItem actionItem = new ActionItem();
+ * actionItem.setItem("My Item");
+ * actionItem.setAction(event -> System.out.println("Clicked: " + event));
+ * actionItem.callAction("click");
+ * }</pre>
  */
 public final class ActionItem {
     private @Nullable Object item;

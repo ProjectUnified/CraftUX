@@ -6,7 +6,20 @@ import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
- * The button
+ * Represents a button that can apply actions to an ActionItem based on a player's UUID.
+ * Buttons are used in GUI systems to define interactive elements that respond to player actions.
+ *
+ * <p>Example implementation:</p>
+ * <pre>{@code
+ * public class MyButton implements Button {
+ *     @Override
+ *     public boolean apply(UUID uuid, ActionItem actionItem) {
+ *         actionItem.setItem("My Button");
+ *         actionItem.setAction(event -> System.out.println("Button clicked by " + uuid));
+ *         return true;
+ *     }
+ * }
+ * }</pre>
  */
 public interface Button {
     /**

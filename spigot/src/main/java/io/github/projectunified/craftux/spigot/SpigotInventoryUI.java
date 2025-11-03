@@ -20,7 +20,17 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * The inventory UI for Spigot
+ * Represents an inventory-based user interface for Spigot (Minecraft) servers.
+ * Manages the display and interaction of GUI elements in a player's inventory.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * SpigotInventoryUI ui = new SpigotInventoryUI(playerUUID, "My GUI", 27); // 3 rows
+ * ui.setMask(myMask);
+ * ui.setDefaultButton(new SimpleButton(new ItemStack(Material.BARRIER), event -> {}));
+ * ui.update(); // Update inventory contents
+ * ui.open(player); // Open for player
+ * }</pre>
  */
 public class SpigotInventoryUI implements InventoryHolder {
     private final UUID viewerId;

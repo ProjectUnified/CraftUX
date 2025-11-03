@@ -12,7 +12,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * The mask with a list of child masks
+ * A mask that applies one of several child masks, cycling through them.
+ * Can optionally remember the current mask index per player UUID.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * ListMask listMask = new ListMask();
+ * listMask.add(
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.IRON_SWORD))),
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.BOW))),
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.SHIELD)))
+ * );
+ * listMask.setKeepCurrentIndex(true); // Remember selection per player
+ * Map<Position, Consumer<ActionItem>> actions = listMask.apply(playerUUID);
+ * }</pre>
  */
 public class ListMask extends MultiMask<Mask> {
     private final Map<UUID, Integer> currentIndexMap = new ConcurrentHashMap<>();

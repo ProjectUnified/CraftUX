@@ -13,7 +13,20 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * The masks with multiple positions
+ * A mask that applies a list of buttons to multiple positions, cycling through buttons if there are more positions than buttons.
+ * Useful for repeating patterns across a grid.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * MultiPositionMask mask = new MultiPositionMask(
+ *     uuid -> Arrays.asList(Position.of(0, 0), Position.of(1, 0), Position.of(2, 0))
+ * );
+ * mask.add(
+ *     new SimpleButton(new ItemStack(Material.RED_CONCRETE)),
+ *     new SimpleButton(new ItemStack(Material.BLUE_CONCRETE))
+ * );
+ * // Positions 0 and 2 get red concrete, position 1 gets blue concrete
+ * }</pre>
  */
 public class MultiPositionMask extends MultiMask<Button> {
     protected final Function<UUID, List<Position>> maskPositionFunction;

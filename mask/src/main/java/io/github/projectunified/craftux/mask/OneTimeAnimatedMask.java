@@ -13,7 +13,20 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 /**
- * The animated mask with child masks as frames, but only run once
+ * A mask that animates through child masks once and then optionally displays the last frame or nothing.
+ * Useful for one-time animations like introductions or transitions.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * OneTimeAnimatedMask mask = new OneTimeAnimatedMask();
+ * mask.add(
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.COAL))),
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.IRON_INGOT))),
+ *     new SingleMask(Position.of(0, 0), new SimpleButton(new ItemStack(Material.DIAMOND)))
+ * );
+ * mask.setPeriodMillis(500); // 500ms per frame
+ * mask.setViewLast(true); // Show last frame after animation
+ * }</pre>
  */
 public class OneTimeAnimatedMask extends MultiMask<Mask> {
     private final Map<UUID, Animation<Mask>> animationMap = new ConcurrentHashMap<>();
@@ -21,9 +34,10 @@ public class OneTimeAnimatedMask extends MultiMask<Mask> {
     private long periodMillis = 50L;
 
     /**
-     * Set the period of the animation
+     * Sets the period of the animation between frame changes.
      *
      * @param periodMillis the period in milliseconds
+     * @throws IllegalArgumentException if periodMillis is not positive
      */
     public void setPeriodMillis(long periodMillis) {
         if (periodMillis <= 0) {

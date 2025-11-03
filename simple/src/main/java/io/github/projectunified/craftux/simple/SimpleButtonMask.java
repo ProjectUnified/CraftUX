@@ -7,7 +7,17 @@ import java.util.*;
 import java.util.function.Consumer;
 
 /**
- * A simple button mask
+ * A simple mask that associates buttons with multiple positions in the GUI grid.
+ * Allows placing the same button in multiple slots or different buttons in various positions.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * SimpleButtonMask mask = new SimpleButtonMask();
+ * mask.setButton(Position.of(0, 0), new SimpleButton(new ItemStack(Material.GRASS_BLOCK)));
+ * mask.setButton(Position.of(1, 1), new SimpleButton(new ItemStack(Material.STONE)));
+ * mask.setButton(Position.of(0, 1), new SimpleButton(new ItemStack(Material.GRASS_BLOCK))); // Same button in multiple positions
+ * Map<Position, Consumer<ActionItem>> actions = mask.apply(playerUUID);
+ * }</pre>
  */
 public class SimpleButtonMask implements Element, Mask {
     private final Map<Button, Collection<Position>> buttonSlotMap = new LinkedHashMap<>();

@@ -17,7 +17,17 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 
 /**
- * The button that stores the input item
+ * A button that stores an input item per player and allows swapping it with the cursor item on click.
+ * Useful for creating input slots where players can place items.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * InputButton inputButton = new InputButton();
+ * inputButton.setDisplayItemFunction((uuid, item) -> {
+ *     if (item == null) return new ItemStack(Material.BARRIER); // Show barrier if empty
+ *     return item;
+ * });
+ * }</pre>
  */
 public class InputButton implements Element, Button {
     private final Map<UUID, ItemStack> map = new IdentityHashMap<>();

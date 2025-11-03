@@ -5,7 +5,15 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * The animation that gets the frame based on the period
+ * Manages a sequence of frames that cycle over time with a specified period.
+ * Provides methods to get the current frame based on elapsed time and reset the animation.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * List<String> frames = Arrays.asList("Frame1", "Frame2", "Frame3");
+ * Animation<String> animation = new Animation<>(frames, 1000); // 1 second per frame
+ * String current = animation.getCurrentFrame(); // Gets current frame based on time
+ * }</pre>
  *
  * @param <T> the frame type
  */
@@ -15,10 +23,11 @@ public class Animation<T> {
     private final AtomicLong startMillis = new AtomicLong(-1);
 
     /**
-     * Create a new animation
+     * Creates a new Animation with the specified frames and period.
      *
-     * @param frames       the frames
-     * @param periodMillis the period in milliseconds
+     * @param frames       the list of frames to cycle through
+     * @param periodMillis the period in milliseconds between frame changes
+     * @throws IllegalArgumentException if frames is empty or periodMillis is not positive
      */
     public Animation(List<T> frames, long periodMillis) {
         if (frames.isEmpty()) {

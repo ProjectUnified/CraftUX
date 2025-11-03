@@ -12,6 +12,24 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
+/**
+ * Abstract base class for masks that support pagination, allowing users to navigate through multiple pages of content.
+ * Provides page management and cycling options.
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * public class MyPaginatedMask extends PaginatedMask {
+ *     protected Map<Position, Consumer<ActionItem>> getItemMap(UUID uuid, int pageNumber) {
+ *         // Return items for the given page
+ *         return pageNumber == 0 ? page1Items : page2Items;
+ *     }
+ * }
+ *
+ * MyPaginatedMask mask = new MyPaginatedMask();
+ * mask.setCycle(true); // Allow cycling through pages
+ * mask.nextPage(playerUUID);
+ * }</pre>
+ */
 public abstract class PaginatedMask implements Element, Mask {
     protected final Map<UUID, Integer> pageNumberMap = new ConcurrentHashMap<>();
     protected boolean cycle = false;
