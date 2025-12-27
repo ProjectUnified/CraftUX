@@ -51,6 +51,18 @@ public class AnimatedButton extends MultiButton {
         this.mode = mode;
     }
 
+    /**
+     * Reset the animation for the unique id
+     *
+     * @param uuid the unique id
+     */
+    public void reset(UUID uuid) {
+        Animation<Button> animation = animationMap.get(uuid);
+        if (animation != null) {
+            animation.reset();
+        }
+    }
+
     private Animation<Button> getAnimation(UUID uuid) {
         return animationMap.computeIfAbsent(uuid, key -> new Animation<>(buttons, periodMillis, mode));
     }

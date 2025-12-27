@@ -55,6 +55,18 @@ public class AnimatedMask extends MultiMask<Mask> {
         this.mode = mode;
     }
 
+    /**
+     * Reset the animation for the unique id
+     *
+     * @param uuid the unique id
+     */
+    public void reset(UUID uuid) {
+        Animation<Mask> animation = animationMap.get(uuid);
+        if (animation != null) {
+            animation.reset();
+        }
+    }
+
     private Animation<Mask> getAnimation(@NotNull UUID uuid) {
         return animationMap.computeIfAbsent(uuid, k -> new Animation<>(elements, periodMillis, mode));
     }
