@@ -50,6 +50,12 @@ public abstract class MaskPaginatedMask extends PaginatedMask {
         return masks.get(pageNumber).apply(uuid);
     }
 
+    @Override
+    protected int getPageAmount(@NotNull UUID uuid) {
+        List<Mask> masks = getMasks(uuid);
+        return masks.size();
+    }
+
     /**
      * Clears the page number mappings for all users.
      */

@@ -65,13 +65,17 @@ public abstract class ButtonPaginatedMask extends PaginatedMask {
     @NotNull
     public abstract List<Button> getButtons(@NotNull UUID uuid);
 
+    private int getPageAmount(List<Position> positions, List<Button> buttons) {
+        return (int) Math.ceil((double) buttons.size() / positions.size());
+    }
+
     @Override
     protected @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber) {
         List<Position> positions = this.maskPositionFunction.apply(uuid);
         List<Button> buttons = getButtons(uuid);
         if (buttons.isEmpty() || positions.isEmpty()) return null;
 
-        int pageAmount = (int) Math.ceil((double) buttons.size() / positions.size());
+        int pageAmount = this.getPageAmount(positions, buttons);
         pageNumber = this.getAndSetExactPage(uuid, pageNumber, pageAmount);
 
         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
@@ -89,6 +93,14 @@ public abstract class ButtonPaginatedMask extends PaginatedMask {
         }
 
         return map;
+    }
+
+    @Override
+    protected int getPageAmount(@NotNull UUID uuid) {
+        List<Position> positions = this.maskPositionFunction.apply(uuid);
+        List<Button> buttons = getButtons(uuid);
+        if (buttons.isEmpty() || positions.isEmpty()) return 0;
+        return this.getPageAmount(positions, buttons);
     }
 
     /**

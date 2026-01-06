@@ -44,6 +44,14 @@ public abstract class PaginatedMask implements Element, Mask {
     protected abstract @Nullable Map<Position, Consumer<ActionItem>> getItemMap(@NotNull UUID uuid, int pageNumber);
 
     /**
+     * Get the amount of pages available for the unique id
+     *
+     * @param uuid the unique id
+     * @return the amount of pages
+     */
+    protected abstract int getPageAmount(@NotNull UUID uuid);
+
+    /**
      * Get the exact page from the input page
      *
      * @param page       the input page

@@ -96,6 +96,14 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
         return map;
     }
 
+    @Override
+    protected int getPageAmount(@NotNull UUID uuid) {
+        List<Position> positions = this.maskPositionFunction.apply(uuid);
+        List<Button> buttons = getButtons(uuid);
+        if (buttons.isEmpty() || positions.isEmpty()) return 0;
+        return buttons.size();
+    }
+
     /**
      * Clears the page number mappings for all users.
      */
