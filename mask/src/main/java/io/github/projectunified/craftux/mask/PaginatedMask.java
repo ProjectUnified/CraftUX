@@ -49,7 +49,7 @@ public abstract class PaginatedMask implements Element, Mask {
      * @param uuid the unique id
      * @return the amount of pages
      */
-    protected abstract int getPageAmount(@NotNull UUID uuid);
+    public abstract int getPageAmount(@NotNull UUID uuid);
 
     /**
      * Get the exact page from the input page

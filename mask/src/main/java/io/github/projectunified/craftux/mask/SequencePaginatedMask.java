@@ -97,7 +97,7 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
     }
 
     @Override
-    protected int getPageAmount(@NotNull UUID uuid) {
+    public int getPageAmount(@NotNull UUID uuid) {
         List<Position> positions = this.maskPositionFunction.apply(uuid);
         List<Button> buttons = getButtons(uuid);
         if (buttons.isEmpty() || positions.isEmpty()) return 0;

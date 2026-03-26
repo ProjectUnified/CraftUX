@@ -51,7 +51,7 @@ public abstract class MaskPaginatedMask extends PaginatedMask {
     }
 
     @Override
-    protected int getPageAmount(@NotNull UUID uuid) {
+    public int getPageAmount(@NotNull UUID uuid) {
         List<Mask> masks = getMasks(uuid);
         return masks.size();
     }
