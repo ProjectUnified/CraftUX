@@ -33,6 +33,16 @@ public class SimpleButtonMask implements Element, Mask {
     }
 
     /**
+     * Set the button
+     *
+     * @param positions the collection of position
+     * @param button    the button
+     */
+    public void setButton(Collection<Position> positions, @NotNull Button button) {
+        buttonSlotMap.computeIfAbsent(button, b -> new ArrayList<>()).addAll(positions);
+    }
+
+    /**
      * Get the button-to-slot map
      *
      * @return the button-to-slot map
