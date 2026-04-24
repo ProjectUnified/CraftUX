@@ -76,6 +76,8 @@ public class AnimatedButton extends MultiButton {
     @Override
     public boolean apply(@NotNull UUID uuid, @NotNull ActionItem actionItem) {
         if (this.buttons.isEmpty()) return false;
-        return getAnimation(uuid).getCurrentFrame().apply(uuid, actionItem);
+        Button currentFrame = getAnimation(uuid).getCurrentFrame();
+        if (currentFrame == null) return false;
+        return currentFrame.apply(uuid, actionItem);
     }
 }
