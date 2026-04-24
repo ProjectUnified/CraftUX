@@ -80,6 +80,7 @@ public class AnimatedMask extends MultiMask<Mask> {
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         if (elements.isEmpty()) return null;
-        return getAnimation(uuid).getCurrentFrame().apply(uuid);
+        Mask currentFrame = getAnimation(uuid).getCurrentFrame();
+        return currentFrame == null ? null : currentFrame.apply(uuid);
     }
 }
