@@ -75,15 +75,14 @@ public abstract class SequencePaginatedMask extends PaginatedMask {
         if (buttons.isEmpty() || positions.isEmpty()) return null;
 
         int pageAmount = buttons.size();
-        pageAmount = this.getAndSetExactPage(uuid, pageNumber, pageAmount);
+        pageNumber = this.getAndSetExactPage(uuid, pageNumber, pageAmount);
 
         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
-        int basePage = this.getPage(uuid);
         int buttonsSize = buttons.size();
         int positionSize = positions.size();
 
         for (int i = 0; i < positionSize; i++) {
-            int index = i + basePage;
+            int index = i + pageNumber;
             if (this.cycle) {
                 index = this.getExactPage(index, pageAmount);
             } else if (index >= buttonsSize) {
