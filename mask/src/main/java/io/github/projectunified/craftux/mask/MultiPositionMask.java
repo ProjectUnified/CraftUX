@@ -53,12 +53,14 @@ public class MultiPositionMask extends MultiMask<Button> {
     @Override
     public @NotNull Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
+        Map<Button, Consumer<ActionItem>> cacheMap = new HashMap<>();
         List<Position> positions = this.maskPositionFunction.apply(uuid);
         if (!this.elements.isEmpty() && !positions.isEmpty()) {
             int positionSize = positions.size();
             int buttonsSize = this.elements.size();
             for (int i = 0; i < positionSize; i++) {
-                map.put(positions.get(i), this.elements.get(i % buttonsSize).apply(uuid));
+                Button button = this.elements.get(i % buttonsSize);
+                map.put(positions.get(i), cacheMap.computeIfAbsent(button, b -> b.apply(uuid)));
             }
         }
         return map;
