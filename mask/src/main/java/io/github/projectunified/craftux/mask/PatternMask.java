@@ -82,13 +82,15 @@ public class PatternMask implements Element, Mask {
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         Map<Position, Consumer<ActionItem>> map = new HashMap<>();
+        Map<Button, Consumer<ActionItem>> buttonMap = new HashMap<>();
         for (int y = 0; y < pattern.length; y++) {
             char[] line = pattern[y];
             for (int x = 0; x < line.length; x++) {
                 char c = line[x];
                 Button button = buttons.get(c);
                 if (button != null) {
-                    map.put(Position.of(x, y), button.apply(uuid));
+                    Consumer<ActionItem> consumer = buttonMap.computeIfAbsent(button, b -> b.apply(uuid));
+                    map.put(Position.of(x, y), consumer);
                 }
             }
         }
