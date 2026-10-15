@@ -18,6 +18,7 @@
         <module>spigot</module>
         <module>spigot-button</module>
         <module>minestom</module>
+        <module>bom</module>
     </modules>
 
     <name>CraftUX</name>
