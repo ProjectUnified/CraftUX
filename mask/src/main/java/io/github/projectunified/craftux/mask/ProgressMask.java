@@ -52,12 +52,30 @@ public abstract class ProgressMask implements Element, Mask {
     }
 
     /**
+     * Get the button for the complete positions
+     *
+     * @return the complete button
+     */
+    public Button getCompleteButton() {
+        return completeButton;
+    }
+
+    /**
      * Set the button for the complete positions
      *
      * @param completeButton the complete button
      */
     public void setCompleteButton(@Nullable Button completeButton) {
         this.completeButton = completeButton;
+    }
+
+    /**
+     * Get the button for the incomplete positions
+     *
+     * @return the incomplete button
+     */
+    public Button getIncompleteButton() {
+        return incompleteButton;
     }
 
     /**
