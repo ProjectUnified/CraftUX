@@ -23,7 +23,7 @@ import java.util.function.Consumer;
  * }</pre>
  */
 public class PatternMask implements Element, Mask {
-    private final char[][] pattern;
+    private final Map<Character, List<Position>> positions = new HashMap<>();
     private final Map<Character, Button> buttons = new HashMap<>();
 
     /**
@@ -32,7 +32,13 @@ public class PatternMask implements Element, Mask {
      * @param pattern the pattern, one row per array
      */
     public PatternMask(char[][] pattern) {
-        this.pattern = pattern;
+        for (int y = 0; y < pattern.length; y++) {
+            char[] line = pattern[y];
+            for (int x = 0; x < line.length; x++) {
+                char c = line[x];
+                positions.computeIfAbsent(c, _char -> new ArrayList<>()).add(Position.of(x, y));
+            }
+        }
     }
 
     /**
@@ -41,9 +47,12 @@ public class PatternMask implements Element, Mask {
      * @param pattern the pattern, one string per row
      */
     public PatternMask(List<String> pattern) {
-        this.pattern = new char[pattern.size()][];
-        for (int i = 0; i < pattern.size(); i++) {
-            this.pattern[i] = pattern.get(i).toCharArray();
+        for (int y = 0; y < pattern.size(); y++) {
+            String line = pattern.get(y);
+            for (int x = 0; x < line.length(); x++) {
+                char c = line.charAt(x);
+                positions.computeIfAbsent(c, _char -> new ArrayList<>()).add(Position.of(x, y));
+            }
         }
     }
 
@@ -67,30 +76,23 @@ public class PatternMask implements Element, Mask {
     }
 
     /**
-     * Get a copy of the pattern
+     * Get the parsed position-by-character map
      *
-     * @return the pattern
+     * @return the position-by-charactor map
      */
-    public char[][] getPattern() {
-        char[][] clone = new char[pattern.length][];
-        for (int i = 0; i < pattern.length; i++) {
-            clone[i] = pattern[i].clone();
-        }
-        return clone;
+    public Map<Character, List<Position>> getPositions() {
+        return Collections.unmodifiableMap(positions);
     }
 
     @Override
     public @Nullable Map<Position, Consumer<ActionItem>> apply(@NotNull UUID uuid) {
         Map<Position, Consumer<ActionItem>> buttonMap = new HashMap<>();
-        Map<Button, Consumer<ActionItem>> cacheMap = new HashMap<>();
-        for (int y = 0; y < pattern.length; y++) {
-            char[] line = pattern[y];
-            for (int x = 0; x < line.length; x++) {
-                char c = line[x];
-                Button button = buttons.get(c);
-                if (button != null) {
-                    buttonMap.put(Position.of(x, y), cacheMap.computeIfAbsent(button, b -> b.apply(uuid)));
-                }
+        for (Map.Entry<Character, Button> entry : buttons.entrySet()) {
+            Button button = entry.getValue();
+            List<Position> positionList = positions.get(entry.getKey());
+            if (positionList != null) {
+                Consumer<ActionItem> actionItemConsumer = button.apply(uuid);
+                positionList.forEach(position -> buttonMap.put(position, actionItemConsumer));
             }
         }
         return buttonMap;
